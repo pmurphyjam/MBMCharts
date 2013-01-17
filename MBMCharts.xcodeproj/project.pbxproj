@@ -1,0 +1,392 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1A84C6E316965191000DCF3D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A84C6E216965191000DCF3D /* UIKit.framework */; };
+		1A84C6E516965191000DCF3D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A84C6E416965191000DCF3D /* Foundation.framework */; };
+		1A84C6E716965191000DCF3D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A84C6E616965191000DCF3D /* CoreGraphics.framework */; };
+		1A84C6ED16965191000DCF3D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A84C6EB16965191000DCF3D /* InfoPlist.strings */; };
+		1A84C6EF16965191000DCF3D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A84C6EE16965191000DCF3D /* main.m */; };
+		1A84C6F316965191000DCF3D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A84C6F216965191000DCF3D /* AppDelegate.m */; };
+		1A84C6F516965191000DCF3D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A84C6F416965191000DCF3D /* Default.png */; };
+		1A84C6F716965191000DCF3D /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A84C6F616965191000DCF3D /* Default@2x.png */; };
+		1A84C6F916965191000DCF3D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A84C6F816965191000DCF3D /* Default-568h@2x.png */; };
+		1A84C7161696529B000DCF3D /* MBMBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A84C70B1696529B000DCF3D /* MBMBarChart.m */; };
+		1A84C7171696529B000DCF3D /* MBMChartDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A84C70D1696529B000DCF3D /* MBMChartDefines.m */; };
+		1A84C7181696529B000DCF3D /* MBMLineChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A84C70F1696529B000DCF3D /* MBMLineChart.m */; };
+		1A84C7191696529B000DCF3D /* MBMPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A84C7111696529B000DCF3D /* MBMPieChart.m */; };
+		1A84C71A1696529B000DCF3D /* UIColorCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A84C7131696529B000DCF3D /* UIColorCategory.m */; };
+		1A84C71B1696529B000DCF3D /* UIImageCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A84C7151696529B000DCF3D /* UIImageCategory.m */; };
+		1A84C72B169652D4000DCF3D /* BarChartViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A84C71C169652D4000DCF3D /* BarChartViewController-iPad.xib */; };
+		1A84C72C169652D4000DCF3D /* BarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A84C71E169652D4000DCF3D /* BarChartViewController.m */; };
+		1A84C72D169652D4000DCF3D /* BarChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A84C71F169652D4000DCF3D /* BarChartViewController.xib */; };
+		1A84C72E169652D4000DCF3D /* ChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A84C721169652D4000DCF3D /* ChartViewController.m */; };
+		1A84C72F169652D4000DCF3D /* ChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A84C722169652D4000DCF3D /* ChartViewController.xib */; };
+		1A84C730169652D4000DCF3D /* LineChartViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A84C723169652D4000DCF3D /* LineChartViewController-iPad.xib */; };
+		1A84C731169652D4000DCF3D /* LineChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A84C725169652D4000DCF3D /* LineChartViewController.m */; };
+		1A84C732169652D4000DCF3D /* LineChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A84C726169652D4000DCF3D /* LineChartViewController.xib */; };
+		1A84C733169652D4000DCF3D /* PieChartViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A84C727169652D4000DCF3D /* PieChartViewController-iPad.xib */; };
+		1A84C734169652D4000DCF3D /* PieChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A84C729169652D4000DCF3D /* PieChartViewController.m */; };
+		1A84C735169652D4000DCF3D /* PieChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A84C72A169652D4000DCF3D /* PieChartViewController.xib */; };
+		1A84C73716965328000DCF3D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A84C73616965328000DCF3D /* QuartzCore.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1A84C6DE16965191000DCF3D /* MBMCharts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MBMCharts.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A84C6E216965191000DCF3D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		1A84C6E416965191000DCF3D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1A84C6E616965191000DCF3D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		1A84C6EA16965191000DCF3D /* MBMCharts-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MBMCharts-Info.plist"; path = "MBMCharts/MBMCharts-Info.plist"; sourceTree = SOURCE_ROOT; };
+		1A84C6EC16965191000DCF3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1A84C6EE16965191000DCF3D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = MBMCharts/main.m; sourceTree = SOURCE_ROOT; };
+		1A84C6F016965191000DCF3D /* MBMCharts-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MBMCharts-Prefix.pch"; path = "MBMCharts/MBMCharts-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		1A84C6F116965191000DCF3D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = MBMCharts/AppDelegate.h; sourceTree = SOURCE_ROOT; };
+		1A84C6F216965191000DCF3D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = MBMCharts/AppDelegate.m; sourceTree = SOURCE_ROOT; };
+		1A84C6F416965191000DCF3D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = MBMCharts/Default.png; sourceTree = SOURCE_ROOT; };
+		1A84C6F616965191000DCF3D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "MBMCharts/Default@2x.png"; sourceTree = SOURCE_ROOT; };
+		1A84C6F816965191000DCF3D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "MBMCharts/Default-568h@2x.png"; sourceTree = SOURCE_ROOT; };
+		1A84C70A1696529B000DCF3D /* MBMBarChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMBarChart.h; path = MBMCharts/MBMBarChart.h; sourceTree = SOURCE_ROOT; };
+		1A84C70B1696529B000DCF3D /* MBMBarChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMBarChart.m; path = MBMCharts/MBMBarChart.m; sourceTree = SOURCE_ROOT; };
+		1A84C70C1696529B000DCF3D /* MBMChartDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMChartDefines.h; path = MBMCharts/MBMChartDefines.h; sourceTree = SOURCE_ROOT; };
+		1A84C70D1696529B000DCF3D /* MBMChartDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMChartDefines.m; path = MBMCharts/MBMChartDefines.m; sourceTree = SOURCE_ROOT; };
+		1A84C70E1696529B000DCF3D /* MBMLineChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMLineChart.h; path = MBMCharts/MBMLineChart.h; sourceTree = SOURCE_ROOT; };
+		1A84C70F1696529B000DCF3D /* MBMLineChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMLineChart.m; path = MBMCharts/MBMLineChart.m; sourceTree = SOURCE_ROOT; };
+		1A84C7101696529B000DCF3D /* MBMPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMPieChart.h; path = MBMCharts/MBMPieChart.h; sourceTree = SOURCE_ROOT; };
+		1A84C7111696529B000DCF3D /* MBMPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMPieChart.m; path = MBMCharts/MBMPieChart.m; sourceTree = SOURCE_ROOT; };
+		1A84C7121696529B000DCF3D /* UIColorCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIColorCategory.h; path = MBMCharts/UIColorCategory.h; sourceTree = SOURCE_ROOT; };
+		1A84C7131696529B000DCF3D /* UIColorCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIColorCategory.m; path = MBMCharts/UIColorCategory.m; sourceTree = SOURCE_ROOT; };
+		1A84C7141696529B000DCF3D /* UIImageCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIImageCategory.h; path = MBMCharts/UIImageCategory.h; sourceTree = SOURCE_ROOT; };
+		1A84C7151696529B000DCF3D /* UIImageCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIImageCategory.m; path = MBMCharts/UIImageCategory.m; sourceTree = SOURCE_ROOT; };
+		1A84C71C169652D4000DCF3D /* BarChartViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "BarChartViewController-iPad.xib"; path = "MBMCharts/BarChartViewController-iPad.xib"; sourceTree = SOURCE_ROOT; };
+		1A84C71D169652D4000DCF3D /* BarChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BarChartViewController.h; path = MBMCharts/BarChartViewController.h; sourceTree = SOURCE_ROOT; };
+		1A84C71E169652D4000DCF3D /* BarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BarChartViewController.m; path = MBMCharts/BarChartViewController.m; sourceTree = SOURCE_ROOT; };
+		1A84C71F169652D4000DCF3D /* BarChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BarChartViewController.xib; path = MBMCharts/BarChartViewController.xib; sourceTree = SOURCE_ROOT; };
+		1A84C720169652D4000DCF3D /* ChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChartViewController.h; path = MBMCharts/ChartViewController.h; sourceTree = SOURCE_ROOT; };
+		1A84C721169652D4000DCF3D /* ChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChartViewController.m; path = MBMCharts/ChartViewController.m; sourceTree = SOURCE_ROOT; };
+		1A84C722169652D4000DCF3D /* ChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ChartViewController.xib; path = MBMCharts/ChartViewController.xib; sourceTree = SOURCE_ROOT; };
+		1A84C723169652D4000DCF3D /* LineChartViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "LineChartViewController-iPad.xib"; path = "MBMCharts/LineChartViewController-iPad.xib"; sourceTree = SOURCE_ROOT; };
+		1A84C724169652D4000DCF3D /* LineChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LineChartViewController.h; path = MBMCharts/LineChartViewController.h; sourceTree = SOURCE_ROOT; };
+		1A84C725169652D4000DCF3D /* LineChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LineChartViewController.m; path = MBMCharts/LineChartViewController.m; sourceTree = SOURCE_ROOT; };
+		1A84C726169652D4000DCF3D /* LineChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LineChartViewController.xib; path = MBMCharts/LineChartViewController.xib; sourceTree = SOURCE_ROOT; };
+		1A84C727169652D4000DCF3D /* PieChartViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "PieChartViewController-iPad.xib"; path = "MBMCharts/PieChartViewController-iPad.xib"; sourceTree = SOURCE_ROOT; };
+		1A84C728169652D4000DCF3D /* PieChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PieChartViewController.h; path = MBMCharts/PieChartViewController.h; sourceTree = SOURCE_ROOT; };
+		1A84C729169652D4000DCF3D /* PieChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PieChartViewController.m; path = MBMCharts/PieChartViewController.m; sourceTree = SOURCE_ROOT; };
+		1A84C72A169652D4000DCF3D /* PieChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PieChartViewController.xib; path = MBMCharts/PieChartViewController.xib; sourceTree = SOURCE_ROOT; };
+		1A84C73616965328000DCF3D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		1A84C73816965A09000DCF3D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.md; path = MBMCharts/README.md; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1A84C6DB16965191000DCF3D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A84C73716965328000DCF3D /* QuartzCore.framework in Frameworks */,
+				1A84C6E316965191000DCF3D /* UIKit.framework in Frameworks */,
+				1A84C6E516965191000DCF3D /* Foundation.framework in Frameworks */,
+				1A84C6E716965191000DCF3D /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1A84C6D316965191000DCF3D = {
+			isa = PBXGroup;
+			children = (
+				1A84C73816965A09000DCF3D /* README.md */,
+				1A84C6E816965191000DCF3D /* MBMCharts */,
+				1A84C6E116965191000DCF3D /* Frameworks */,
+				1A84C6DF16965191000DCF3D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1A84C6DF16965191000DCF3D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1A84C6DE16965191000DCF3D /* MBMCharts.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1A84C6E116965191000DCF3D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1A84C73616965328000DCF3D /* QuartzCore.framework */,
+				1A84C6E216965191000DCF3D /* UIKit.framework */,
+				1A84C6E416965191000DCF3D /* Foundation.framework */,
+				1A84C6E616965191000DCF3D /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1A84C6E816965191000DCF3D /* MBMCharts */ = {
+			isa = PBXGroup;
+			children = (
+				1A84C7081696524F000DCF3D /* Models */,
+				1A84C7091696525F000DCF3D /* View Controllers */,
+				1A84C6F116965191000DCF3D /* AppDelegate.h */,
+				1A84C6F216965191000DCF3D /* AppDelegate.m */,
+				1A84C6E916965191000DCF3D /* Supporting Files */,
+			);
+			path = MBMCharts;
+			sourceTree = "<group>";
+		};
+		1A84C6E916965191000DCF3D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				1A84C6EA16965191000DCF3D /* MBMCharts-Info.plist */,
+				1A84C6EB16965191000DCF3D /* InfoPlist.strings */,
+				1A84C6EE16965191000DCF3D /* main.m */,
+				1A84C6F016965191000DCF3D /* MBMCharts-Prefix.pch */,
+				1A84C6F416965191000DCF3D /* Default.png */,
+				1A84C6F616965191000DCF3D /* Default@2x.png */,
+				1A84C6F816965191000DCF3D /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		1A84C7081696524F000DCF3D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1A84C70A1696529B000DCF3D /* MBMBarChart.h */,
+				1A84C70B1696529B000DCF3D /* MBMBarChart.m */,
+				1A84C70C1696529B000DCF3D /* MBMChartDefines.h */,
+				1A84C70D1696529B000DCF3D /* MBMChartDefines.m */,
+				1A84C70E1696529B000DCF3D /* MBMLineChart.h */,
+				1A84C70F1696529B000DCF3D /* MBMLineChart.m */,
+				1A84C7101696529B000DCF3D /* MBMPieChart.h */,
+				1A84C7111696529B000DCF3D /* MBMPieChart.m */,
+				1A84C7121696529B000DCF3D /* UIColorCategory.h */,
+				1A84C7131696529B000DCF3D /* UIColorCategory.m */,
+				1A84C7141696529B000DCF3D /* UIImageCategory.h */,
+				1A84C7151696529B000DCF3D /* UIImageCategory.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		1A84C7091696525F000DCF3D /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				1A84C71D169652D4000DCF3D /* BarChartViewController.h */,
+				1A84C71E169652D4000DCF3D /* BarChartViewController.m */,
+				1A84C71F169652D4000DCF3D /* BarChartViewController.xib */,
+				1A84C71C169652D4000DCF3D /* BarChartViewController-iPad.xib */,
+				1A84C720169652D4000DCF3D /* ChartViewController.h */,
+				1A84C721169652D4000DCF3D /* ChartViewController.m */,
+				1A84C722169652D4000DCF3D /* ChartViewController.xib */,
+				1A84C724169652D4000DCF3D /* LineChartViewController.h */,
+				1A84C725169652D4000DCF3D /* LineChartViewController.m */,
+				1A84C726169652D4000DCF3D /* LineChartViewController.xib */,
+				1A84C723169652D4000DCF3D /* LineChartViewController-iPad.xib */,
+				1A84C728169652D4000DCF3D /* PieChartViewController.h */,
+				1A84C729169652D4000DCF3D /* PieChartViewController.m */,
+				1A84C72A169652D4000DCF3D /* PieChartViewController.xib */,
+				1A84C727169652D4000DCF3D /* PieChartViewController-iPad.xib */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1A84C6DD16965191000DCF3D /* MBMCharts */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A84C70516965191000DCF3D /* Build configuration list for PBXNativeTarget "MBMCharts" */;
+			buildPhases = (
+				1A84C6DA16965191000DCF3D /* Sources */,
+				1A84C6DB16965191000DCF3D /* Frameworks */,
+				1A84C6DC16965191000DCF3D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MBMCharts;
+			productName = MBMCharts;
+			productReference = 1A84C6DE16965191000DCF3D /* MBMCharts.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1A84C6D516965191000DCF3D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "Pat Murphy";
+			};
+			buildConfigurationList = 1A84C6D816965191000DCF3D /* Build configuration list for PBXProject "MBMCharts" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 1A84C6D316965191000DCF3D;
+			productRefGroup = 1A84C6DF16965191000DCF3D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1A84C6DD16965191000DCF3D /* MBMCharts */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1A84C6DC16965191000DCF3D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A84C6ED16965191000DCF3D /* InfoPlist.strings in Resources */,
+				1A84C6F516965191000DCF3D /* Default.png in Resources */,
+				1A84C6F716965191000DCF3D /* Default@2x.png in Resources */,
+				1A84C6F916965191000DCF3D /* Default-568h@2x.png in Resources */,
+				1A84C72B169652D4000DCF3D /* BarChartViewController-iPad.xib in Resources */,
+				1A84C72D169652D4000DCF3D /* BarChartViewController.xib in Resources */,
+				1A84C72F169652D4000DCF3D /* ChartViewController.xib in Resources */,
+				1A84C730169652D4000DCF3D /* LineChartViewController-iPad.xib in Resources */,
+				1A84C732169652D4000DCF3D /* LineChartViewController.xib in Resources */,
+				1A84C733169652D4000DCF3D /* PieChartViewController-iPad.xib in Resources */,
+				1A84C735169652D4000DCF3D /* PieChartViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1A84C6DA16965191000DCF3D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A84C6EF16965191000DCF3D /* main.m in Sources */,
+				1A84C6F316965191000DCF3D /* AppDelegate.m in Sources */,
+				1A84C7161696529B000DCF3D /* MBMBarChart.m in Sources */,
+				1A84C7171696529B000DCF3D /* MBMChartDefines.m in Sources */,
+				1A84C7181696529B000DCF3D /* MBMLineChart.m in Sources */,
+				1A84C7191696529B000DCF3D /* MBMPieChart.m in Sources */,
+				1A84C71A1696529B000DCF3D /* UIColorCategory.m in Sources */,
+				1A84C71B1696529B000DCF3D /* UIImageCategory.m in Sources */,
+				1A84C72C169652D4000DCF3D /* BarChartViewController.m in Sources */,
+				1A84C72E169652D4000DCF3D /* ChartViewController.m in Sources */,
+				1A84C731169652D4000DCF3D /* LineChartViewController.m in Sources */,
+				1A84C734169652D4000DCF3D /* PieChartViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		1A84C6EB16965191000DCF3D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1A84C6EC16965191000DCF3D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1A84C70316965191000DCF3D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUGX=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1A84C70416965191000DCF3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1A84C70616965191000DCF3D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MBMCharts/MBMCharts-Prefix.pch";
+				INFOPLIST_FILE = "MBMCharts/MBMCharts-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		1A84C70716965191000DCF3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MBMCharts/MBMCharts-Prefix.pch";
+				INFOPLIST_FILE = "MBMCharts/MBMCharts-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1A84C6D816965191000DCF3D /* Build configuration list for PBXProject "MBMCharts" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A84C70316965191000DCF3D /* Debug */,
+				1A84C70416965191000DCF3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A84C70516965191000DCF3D /* Build configuration list for PBXNativeTarget "MBMCharts" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A84C70616965191000DCF3D /* Debug */,
+				1A84C70716965191000DCF3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1A84C6D516965191000DCF3D /* Project object */;
+}
