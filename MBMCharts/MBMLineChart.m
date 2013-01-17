@@ -165,19 +165,19 @@ static CGPathRef CGPathCreateCircle(CGPoint point, CGFloat radius)
 
 static NSDictionary* trigMethod(CGPoint fromPoint, CGPoint toPoint ,CGFloat radius)
 {
-	CGPoint shorterToPoint = CGPointMake(toPoint.x, toPoint.y);
+	CGPoint shorterToPoint = CGPointMake(fromPoint.x, fromPoint.y);
 	//Do some Trig
 	CGFloat dx = (toPoint.x - fromPoint.x);
     CGFloat dy = (toPoint.y - fromPoint.y);
 	CGFloat hyp = sqrtf((dx * dx) + (dy * dy));
 	CGFloat angle = 0;
 	if(hyp > 0)
-		angle = atan2f(dy, dx);
+		angle = atan2f(dy, dx) + M_PI;
 	
 	CGFloat obs = sinf(angle)*(hyp - radius);
-	CGFloat newY = fromPoint.y + obs;
+	CGFloat newY = toPoint.y + obs;
 	CGFloat adj = cosf(angle)*(hyp - radius);
-	CGFloat newX = fromPoint.x + adj;
+	CGFloat newX = toPoint.x + adj;
 	
 	if(hyp > 0)
 	{
@@ -218,7 +218,8 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 	CGFloat angle = [[trigDic objectForKey:@"Angle"] floatValue];
 	CGPoint shorterToPoint = [[trigDic objectForKey:@"NewPoint"] CGPointValue];
     CGMutablePathRef path = CGPathCreateMutable();
-	CGPathAddRelativeArc(path, NULL, fromPoint.x, fromPoint.y, radius, angle, 2 * M_PI);
+	//CGPathAddRelativeArc(path, NULL, fromPoint.x, fromPoint.y, radius, angle, 2 * M_PI);
+    CGPathAddRelativeArc(path, NULL, toPoint.x, toPoint.y, radius, angle, 2 * M_PI);
 	CGPathAddLineToPoint(path, NULL, shorterToPoint.x,shorterToPoint.y);
 	return path;
 }
