@@ -34,6 +34,14 @@
 		1A84C734169652D4000DCF3D /* PieChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A84C729169652D4000DCF3D /* PieChartViewController.m */; };
 		1A84C735169652D4000DCF3D /* PieChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A84C72A169652D4000DCF3D /* PieChartViewController.xib */; };
 		1A84C73716965328000DCF3D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A84C73616965328000DCF3D /* QuartzCore.framework */; };
+		1AE3010316A8A573000F49B4 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AE3010216A8A572000F49B4 /* Icon.png */; };
+		1AE3010616A8A57D000F49B4 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AE3010516A8A57D000F49B4 /* Icon@2x.png */; };
+		1AE3010816A8A58D000F49B4 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AE3010716A8A58D000F49B4 /* Icon-72.png */; };
+		1AE3010A16A8A594000F49B4 /* Icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AE3010916A8A593000F49B4 /* Icon-144.png */; };
+		1AE3010C16A8A5A6000F49B4 /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AE3010B16A8A5A6000F49B4 /* Default-Portrait~ipad.png */; };
+		1AE3010E16A8A5AD000F49B4 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AE3010D16A8A5AD000F49B4 /* Default-Portrait@2x~ipad.png */; };
+		1AE3011016A8A5B4000F49B4 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AE3010F16A8A5B4000F49B4 /* Default-Landscape~ipad.png */; };
+		1AE3011216A8A5BA000F49B4 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AE3011116A8A5B9000F49B4 /* Default-Landscape@2x~ipad.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +87,14 @@
 		1A84C72A169652D4000DCF3D /* PieChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PieChartViewController.xib; path = MBMCharts/PieChartViewController.xib; sourceTree = SOURCE_ROOT; };
 		1A84C73616965328000DCF3D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1A84C73816965A09000DCF3D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.md; path = MBMCharts/README.md; sourceTree = "<group>"; };
+		1AE3010216A8A572000F49B4 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		1AE3010516A8A57D000F49B4 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		1AE3010716A8A58D000F49B4 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
+		1AE3010916A8A593000F49B4 /* Icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-144.png"; sourceTree = "<group>"; };
+		1AE3010B16A8A5A6000F49B4 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
+		1AE3010D16A8A5AD000F49B4 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
+		1AE3010F16A8A5B4000F49B4 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		1AE3011116A8A5B9000F49B4 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +115,14 @@
 		1A84C6D316965191000DCF3D = {
 			isa = PBXGroup;
 			children = (
+				1AE3011116A8A5B9000F49B4 /* Default-Landscape@2x~ipad.png */,
+				1AE3010F16A8A5B4000F49B4 /* Default-Landscape~ipad.png */,
+				1AE3010D16A8A5AD000F49B4 /* Default-Portrait@2x~ipad.png */,
+				1AE3010B16A8A5A6000F49B4 /* Default-Portrait~ipad.png */,
+				1AE3010916A8A593000F49B4 /* Icon-144.png */,
+				1AE3010716A8A58D000F49B4 /* Icon-72.png */,
+				1AE3010516A8A57D000F49B4 /* Icon@2x.png */,
+				1AE3010216A8A572000F49B4 /* Icon.png */,
 				1A84C73816965A09000DCF3D /* README.md */,
 				1A84C6E816965191000DCF3D /* MBMCharts */,
 				1A84C6E116965191000DCF3D /* Frameworks */,
@@ -254,6 +278,14 @@
 				1A84C732169652D4000DCF3D /* LineChartViewController.xib in Resources */,
 				1A84C733169652D4000DCF3D /* PieChartViewController-iPad.xib in Resources */,
 				1A84C735169652D4000DCF3D /* PieChartViewController.xib in Resources */,
+				1AE3010316A8A573000F49B4 /* Icon.png in Resources */,
+				1AE3010616A8A57D000F49B4 /* Icon@2x.png in Resources */,
+				1AE3010816A8A58D000F49B4 /* Icon-72.png in Resources */,
+				1AE3010A16A8A594000F49B4 /* Icon-144.png in Resources */,
+				1AE3010C16A8A5A6000F49B4 /* Default-Portrait~ipad.png in Resources */,
+				1AE3010E16A8A5AD000F49B4 /* Default-Portrait@2x~ipad.png in Resources */,
+				1AE3011016A8A5B4000F49B4 /* Default-Landscape~ipad.png in Resources */,
+				1AE3011216A8A5BA000F49B4 /* Default-Landscape@2x~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
