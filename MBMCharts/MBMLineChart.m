@@ -115,7 +115,6 @@ static NSUInteger kDefaultLineZOrder = 100;
 @synthesize lineRadius = _lineRadius;
 @synthesize numberOfLines = _numberOfLines;
 @synthesize showLabel = _showLabel;
-@synthesize lineAnimationType = _lineAnimationType;
 @synthesize labelFont = _labelFont;
 @synthesize labelColor = _labelColor;
 @synthesize labelShadowColor = _labelShadowColor;
@@ -145,22 +144,11 @@ static NSUInteger kDefaultLineZOrder = 100;
 @synthesize plotVerticalLines;
 @synthesize addHorizontalLabels;
 
-
-
 -(UIColor*) getColorFrom:(UIColor*)inputColor add:(CGFloat)addValue
 {
 	const CGFloat *components = CGColorGetComponents(inputColor.CGColor);
 	UIColor *newColor = RGBA(components[0]+addValue, components[1]+addValue, components[2]+addValue, components[3]);
 	return newColor;
-}
-
-static CGPathRef CGPathCreateCircle(CGPoint point, CGFloat radius)
-{
-    NDLog(@"MBMLineChart : CGPathCreateCircle : Point : x = %f : y = %f : r = %f ",point.x,point.y,radius);
-    CGMutablePathRef path = CGPathCreateMutable();
-	CGPathAddArc(path, NULL, point.x, point.y, radius, 0, 2 * M_PI, 0);
-    CGPathCloseSubpath(path);
-    return path;
 }
 
 static NSDictionary* trigMethod(CGPoint fromPoint, CGPoint toPoint ,CGFloat radius)
@@ -189,27 +177,6 @@ static NSDictionary* trigMethod(CGPoint fromPoint, CGPoint toPoint ,CGFloat radi
 	return trigDic;
 }
 
-static CGPathRef CGPathCreatePathFromPoints(NSMutableArray *points, CGFloat radius)
-{
-    NDLog(@"MBMLineChart : CGPathCreatePathFromPoints : points = %@ ",points);
-    CGMutablePathRef path = CGPathCreateMutable();
-	int index = 0;
-    for(NSValue *lineValue in points)
-    {
-		CGPoint point = [lineValue  CGPointValue];
-		if(index == 0)
-			CGPathMoveToPoint(path, NULL, point.x, point.y);
-		else
-		{
-			CGPathAddLineToPoint(path, NULL, point.x,point.y);
-
-		}
-		//NDLog(@"MBMLineChart : CGPathCreatePathFromPoints : point[%d] : x = %f : y = %f",index,point.x,point.y);
-		index++;
-    }
-	return path;
-}
-
 static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, CGFloat radius)
 {
     NDLog(@"MBMLineChart : CGPathCreatePathFromPoint : fromPoint : x = %f : y = %f : toPoint : x = %f : y = %f  ",fromPoint.x,fromPoint.y,toPoint.x,toPoint.y);
@@ -218,7 +185,6 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 	CGFloat angle = [[trigDic objectForKey:@"Angle"] floatValue];
 	CGPoint shorterToPoint = [[trigDic objectForKey:@"NewPoint"] CGPointValue];
     CGMutablePathRef path = CGPathCreateMutable();
-	//CGPathAddRelativeArc(path, NULL, fromPoint.x, fromPoint.y, radius, angle, 2 * M_PI);
     CGPathAddRelativeArc(path, NULL, toPoint.x, toPoint.y, radius, angle, 2 * M_PI);
 	CGPathAddLineToPoint(path, NULL, shorterToPoint.x,shorterToPoint.y);
 	return path;
@@ -265,7 +231,6 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 		colorAxisY = [UIColor blackColor];
 		colorAxis = [UIColor blackColor];
         _showLabel = YES;
-		_lineAnimationType = NO;
     }
     return self;
 }
@@ -313,7 +278,6 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 		colorAxisY = [UIColor blackColor];
 		colorAxis = [UIColor blackColor];
         _showLabel = YES;
-		_lineAnimationType = NO;
     }
     return self;
 }
@@ -411,29 +375,9 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 		CGPoint fromPoint = CGPointMake(0, 0);
         CGPoint toScaledPoint = CGPointMake(0, 0);
 		CGFloat valueY = self.bounds.size.height-self.paddingBotom;
-		NSMutableArray *fromLineArray = [[NSMutableArray alloc] init];
-		NSMutableArray *toLineArray = [[NSMutableArray alloc] init];
 		
 		CGPathRef fromPath = nil;
 		CGPathRef toPath = nil;
-		
-		if(!_lineAnimationType)
-		{
-			for (NSDictionary *lineDic in _lineDicArray)
-			{
-				CGPoint linePoint = [[lineDic objectForKey:@"LinePoint"] CGPointValue];
-				NSValue *fromScaledValue = [NSValue valueWithCGPoint:CGPointMake(linePoint.x, self.bounds.size.height-self.paddingBotom)];
-				NSValue *toScaledValue = [NSValue valueWithCGPoint:CGPointMake(linePoint.x, self.bounds.size.height-self.paddingBotom-linePoint.y*scaleAxisY)];
-				[toLineArray addObject:toScaledValue];
-				[fromLineArray addObject:fromScaledValue];
-			}
-			//Path along the bottom X axis of the graph
-			fromPath = CGPathCreatePathFromPoints(fromLineArray,_lineRadius);
-			//Path along the points of the graph
-			toPath = CGPathCreatePathFromPoints(toLineArray,_lineRadius);
-			[fromLineArray release];
-			[toLineArray release];
-		}
 		
 		for(int index = 0; index < lineCount; index ++)
 		{
@@ -507,35 +451,20 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
                     fromPoint = toScaledPoint;
 			}
 
-			if(_lineAnimationType)
-			{
-				fromPath = CGPathCreatePathFromPoint(CGPointMake(fromPoint.x,valueY),CGPointMake(point.x,valueY),_lineRadius);
-				toPath = CGPathCreatePathFromPoint(fromPoint,toScaledPoint,_lineRadius);
-			}
-			else
-			{
-				
-				[layer createLineAnimationForKey:@"point"
+			fromPath = CGPathCreatePathFromPoint(CGPointMake(fromPoint.x,valueY),CGPointMake(point.x,valueY),_lineRadius);
+			toPath = CGPathCreatePathFromPoint(fromPoint,toScaledPoint,_lineRadius);
+						
+			[layer createLineAnimationForKey:@"point"
 									   fromValue:[NSValue valueWithCGPoint:CGPointMake(point.x,valueY)]
 										 toValue:[NSValue valueWithCGPoint:toScaledPoint]
 										Delegate:self];
-			}
+			
 			[layer createPathAnimationForKey:@"path"
 									fromValue:fromPath
 									  toValue:toPath
 									 Delegate:self];
 			
 			fromPoint = toScaledPoint;
-
-			if(_lineAnimationType)
-			{
-				CFRelease(fromPath);
-				CFRelease(toPath);
-			}
-
-		}
-		if(!_lineAnimationType)
-		{
 			CFRelease(fromPath);
 			CFRelease(toPath);
 		}
@@ -569,10 +498,7 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 		CGPathRef presentationLayerPath = (CGPathRef)[[obj presentationLayer] valueForKey:@"path"];
 		NDLog(@"MBMLineChart : updateTimerFired : path = %@",CGPathIsEmpty(presentationLayerPath)?@"Bad":@"Good");
 		NDLog(@"MBMLineChart : updateTimerFired :  presentationLayerFromPoint : x = %f : y = %f",presentationLayerPoint.x,presentationLayerPoint.y);
-		CGPathRef path = CGPathCreateCircle(presentationLayerPoint, _lineRadius);
-		CGMutablePathRef combinedPath = CGPathCreateMutableCopy(path);
-		CGPathAddPath(combinedPath,NULL,presentationLayerPath);
-        [obj setPath:combinedPath];
+		[obj setPath:presentationLayerPath];
         {
             CALayer *labelLayer = [[obj sublayers] objectAtIndex:0];
             //Hide the labelLayer so when the user clicks on it, it becomes visible
@@ -581,8 +507,6 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 			[labelLayer setPosition:CGPointMake(presentationLayerPoint.x, presentationLayerPoint.y-_lineRadius)];
             [CATransaction setDisableActions:NO];
         }
-        CFRelease(path);
-		CFRelease(combinedPath);
     }];
 }
 
@@ -725,7 +649,6 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
     LineLayer *lineLayer = [LineLayer layer];
 	
 	[lineLayer setPath:nil];
-	
     [lineLayer setZPosition:0];
     [lineLayer setStrokeColor:NULL];
     CATextLayer *textLayer = [CATextLayer layer];

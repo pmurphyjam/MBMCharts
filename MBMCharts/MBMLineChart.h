@@ -37,7 +37,6 @@
 @property (nonatomic, assign) CGFloat numberOfLines;
 @property (nonatomic, assign) NSUInteger numberOfElements;
 @property (nonatomic, assign) BOOL    showLabel;
-@property (nonatomic, assign) BOOL    lineAnimationType;
 @property (nonatomic, retain) UIFont  *labelFont;
 @property (nonatomic, retain) UIColor *labelColor;
 @property (nonatomic, retain) UIColor *labelShadowColor;

@@ -55,7 +55,7 @@
 - (void) setUpChart
 {
 	
-	NSDictionary *chartConfigData = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES],@"showAxisY",[NSNumber numberWithBool:YES],@"showAxisX",@"2ca095",@"ColorAxisY",@"0110ad",@"ColorAxis",[NSNumber numberWithBool:YES],@"PlotVerticalLines",[NSNumber numberWithBool:YES],@"AddHorizontalLabels",[NSNumber numberWithBool:NO],@"LineAnimation",@"ff0000",@"ValueColor",@"0000ff",@"ValueShadowColor",nil];
+	NSDictionary *chartConfigData = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES],@"showAxisY",[NSNumber numberWithBool:YES],@"showAxisX",@"2ca095",@"ColorAxisY",@"0110ad",@"ColorAxis",[NSNumber numberWithBool:YES],@"PlotVerticalLines",[NSNumber numberWithBool:YES],@"AddHorizontalLabels",@"ff0000",@"ValueColor",@"0000ff",@"ValueShadowColor",nil];
 	[self.lineChartConfigArray addObject:chartConfigData];
 	
 	NSDictionary *chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Jan",@"Label",@"3e5273",@"LabelColor",@"19",@"Value",@"3e5273",@"Color",nil];
@@ -87,7 +87,6 @@
 	[self.lineChart setShowAxisY:[[[self.lineChartConfigArray objectAtIndex:0] objectForKey:@"showAxisY"] boolValue]];
 	[self.lineChart setNumberOfElements:[self.lineChartDataArray count]];
 	[self.lineChart setPlotVerticalLines:[[[self.lineChartConfigArray objectAtIndex:0] objectForKey:@"PlotVerticalLines"] boolValue]];
-	[self.lineChart setLineAnimationType:[[[self.lineChartConfigArray objectAtIndex:0] objectForKey:@"LineAnimation"] boolValue]];
 	[self.lineChart setAddHorizontalLabels:[[[self.lineChartConfigArray objectAtIndex:0] objectForKey:@"AddHorizontalLabels"] boolValue]];
 	[self.lineChart setColorAxisY:[UIColor colorWithHexRGB:[[self.lineChartConfigArray objectAtIndex:0] objectForKey:@"ColorAxisY"] AndAlpha:1]];
 	[self.lineChart setColorAxis:[UIColor colorWithHexRGB:[[self.lineChartConfigArray objectAtIndex:0] objectForKey:@"ColorAxis"] AndAlpha:1]];
@@ -167,7 +166,7 @@
 	if (num > 0) {
         for (int n=0; n < abs(num); n++)
 		{
-			NSNumber *barHeightNum = [NSNumber numberWithInt:rand()%300+20];
+			NSNumber *barHeightNum = [NSNumber numberWithInt:arc4random()%300+20];
 			NSInteger baseInt = arc4random() % 16777216;
 			NSString *hexColor = [NSString stringWithFormat:@"%06X", baseInt];
 			
@@ -257,12 +256,6 @@
 		[_lineDicArray replaceObjectAtIndex:index withObject:lineDic];
 		[lineDic release];
 	}
-	[self.lineChart reloadData];
-}
-
-- (IBAction)changeLineAnimation:(id)sender {
-    UISwitch *lineSwitch = (UISwitch *)sender;
-    [self.lineChart setLineAnimationType:lineSwitch.isOn];
 	[self.lineChart reloadData];
 }
 

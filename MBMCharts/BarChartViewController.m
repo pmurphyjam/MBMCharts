@@ -169,7 +169,7 @@
 	if (num > 0) {
         for (int n=0; n < abs(num); n++)
 		{
-			NSNumber *barHeightNum = [NSNumber numberWithInt:rand()%300+20];
+			NSNumber *barHeightNum = [NSNumber numberWithInt:arc4random()%300+20];
 			NSInteger baseInt = arc4random() % 16777216;
 			NSString *hexColor = [NSString stringWithFormat:@"%06X", baseInt];
 			

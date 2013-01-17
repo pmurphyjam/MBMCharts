@@ -193,7 +193,7 @@
     if (num > 0) {
         for (int n=0; n < abs(num); n++)
         {
-            NSNumber *pieValue = [NSNumber numberWithInt:rand()%100+20];
+            NSNumber *pieValue = [NSNumber numberWithInt:arc4random()%100+20];
 			NSInteger baseInt = arc4random() % 16777216;
 			NSString *pieColorVal = [NSString stringWithFormat:@"%06X", baseInt];
 			UIColor *pieColor = [UIColor colorWithHexRGB:pieColorVal AndAlpha:1.0];
