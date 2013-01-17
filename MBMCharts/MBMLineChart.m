@@ -222,6 +222,7 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 		paddingTop = PLOT_PADDING_TOP;
 		paddingBotom = PLOT_PADDING_BOTTOM;
 		self.lineRadius = LINE_CHART_POINT_RADIUS;
+		chartRect = frame;
 		self.linePoint = CGPointMake(frame.origin.x, frame.origin.y);
         self.lineHeight = MIN(frame.size.width/2, frame.size.height/2) - 10;
         self.numberOfLines = 2;
@@ -652,6 +653,7 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
     [lineLayer setZPosition:0];
     [lineLayer setStrokeColor:NULL];
     CATextLayer *textLayer = [CATextLayer layer];
+	[textLayer setHidden:YES];
     textLayer.contentsScale = [[UIScreen mainScreen] scale];
     CGFontRef font = CGFontCreateWithFontName((CFStringRef)[self.labelFont fontName]);
     [textLayer setFont:font];

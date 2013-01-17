@@ -36,6 +36,7 @@
 	else
 	{
 		[[NSBundle mainBundle] loadNibNamed:@"LineChartViewController" owner:self options:nil];
+		NSLog(@"LineChartVCtrl : loadView : iPhone Nib");
 	}
 }
 
@@ -47,9 +48,16 @@
 	_lineChartDataArray = [[NSMutableArray alloc] init];
 	_lineChartConfigArray = [[NSMutableArray alloc] init];
 	
-	[self setUpChart];
     //rotate up arrow
     self.downArrow.transform = CGAffineTransformMakeRotation(M_PI);
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	//View is sized properly so set chartRect
+	[self.lineChart setChartRect:self.view.frame];
+	[self setUpChart];
 }
 
 - (void) setUpChart

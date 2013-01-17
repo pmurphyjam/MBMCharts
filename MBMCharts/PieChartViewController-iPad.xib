@@ -55,7 +55,7 @@
 					</object>
 					<object class="IBUIView" id="731231040">
 						<reference key="NSNextResponder" ref="766721923"/>
-						<int key="NSvFlags">310</int>
+						<int key="NSvFlags">292</int>
 						<array class="NSMutableArray" key="NSSubviews">
 							<object class="IBUILabel" id="220816536">
 								<reference key="NSNextResponder" ref="731231040"/>
@@ -110,7 +110,7 @@
 					</object>
 					<object class="IBUIView" id="131818279">
 						<reference key="NSNextResponder" ref="766721923"/>
-						<int key="NSvFlags">274</int>
+						<int key="NSvFlags">289</int>
 						<string key="NSFrame">{{528, 0}, {480, 522}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
@@ -805,6 +805,25 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">PieChartViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="SliceNumChanged:">id</string>
+						<string key="addSliceBtnClicked:">id</string>
+						<string key="showSlicePercentage:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="SliceNumChanged:">
+							<string key="name">SliceNumChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="addSliceBtnClicked:">
+							<string key="name">addSliceBtnClicked:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showSlicePercentage:">
+							<string key="name">showSlicePercentage:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="downArrow">UIButton</string>
 						<string key="indexOfSlices">UISegmentedControl</string>

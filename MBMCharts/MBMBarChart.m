@@ -626,8 +626,8 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
 
     [barLayer setZPosition:0];
     [barLayer setStrokeColor:NULL];
-
     CATextLayer *textLayer = [CATextLayer layer];
+	[textLayer setHidden:YES];
     textLayer.contentsScale = [[UIScreen mainScreen] scale];
     CGFontRef font = CGFontCreateWithFontName((CFStringRef)[self.labelFont fontName]);
     [textLayer setFont:font];

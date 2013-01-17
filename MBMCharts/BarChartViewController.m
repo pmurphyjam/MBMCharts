@@ -47,9 +47,16 @@
 	_barChartDataArray = [[NSMutableArray alloc] init];
 	_barChartConfigArray = [[NSMutableArray alloc] init];
 
-	[self setUpChart];
 	//rotate up arrow
     self.downArrow.transform = CGAffineTransformMakeRotation(M_PI);
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	//View is sized properly so set chartRect
+	[self.barChart setChartRect:self.view.frame];
+	[self setUpChart];
 }
 
 - (void)viewDidAppear:(BOOL)animated

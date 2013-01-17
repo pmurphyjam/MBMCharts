@@ -88,15 +88,15 @@
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC45AA</bytes>
 								</object>
-								<object class="IBUIFontDescription" key="IBUIFontDescription" id="565987118">
+								<object class="IBUIFontDescription" key="IBUIFontDescription" id="177037716">
 									<string key="name">HelveticaNeue-Medium</string>
 									<string key="family">Helvetica Neue</string>
 									<int key="traits">0</int>
-									<double key="pointSize">17</double>
+									<double key="pointSize">14</double>
 								</object>
-								<object class="NSFont" key="IBUIFont" id="417204529">
+								<object class="NSFont" key="IBUIFont" id="246537014">
 									<string key="NSName">HelveticaNeue-Medium</string>
-									<double key="NSSize">17</double>
+									<double key="NSSize">14</double>
 									<int key="NSfFlags">16</int>
 								</object>
 							</object>
@@ -130,8 +130,8 @@
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC45AA</bytes>
 								</object>
-								<reference key="IBUIFontDescription" ref="565987118"/>
-								<reference key="IBUIFont" ref="417204529"/>
+								<reference key="IBUIFontDescription" ref="177037716"/>
+								<reference key="IBUIFont" ref="246537014"/>
 							</object>
 							<object class="IBUIButton" id="786284472">
 								<reference key="NSNextResponder" ref="766296928"/>
@@ -204,7 +204,7 @@
 							<object class="IBUIButton" id="698427981">
 								<reference key="NSNextResponder" ref="766296928"/>
 								<int key="NSvFlags">293</int>
-								<string key="NSFrame">{{85, 14}, {59, 36}}</string>
+								<string key="NSFrame">{{79, 14}, {59, 36}}</string>
 								<reference key="NSSuperview" ref="766296928"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="734067459"/>
@@ -231,15 +231,15 @@
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC45AA</bytes>
 								</object>
-								<object class="IBUIFontDescription" key="IBUIFontDescription" id="1046986872">
+								<object class="IBUIFontDescription" key="IBUIFontDescription">
 									<string key="name">HelveticaNeue-Medium</string>
 									<string key="family">Helvetica Neue</string>
 									<int key="traits">0</int>
-									<double key="pointSize">25</double>
+									<double key="pointSize">21</double>
 								</object>
-								<object class="NSFont" key="IBUIFont" id="335950286">
+								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">HelveticaNeue-Medium</string>
-									<double key="NSSize">25</double>
+									<double key="NSSize">21</double>
 									<int key="NSfFlags">16</int>
 								</object>
 							</object>
@@ -269,13 +269,22 @@
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
-								<reference key="IBUIFontDescription" ref="1046986872"/>
-								<reference key="IBUIFont" ref="335950286"/>
+								<object class="IBUIFontDescription" key="IBUIFontDescription">
+									<string key="name">HelveticaNeue-Medium</string>
+									<string key="family">Helvetica Neue</string>
+									<int key="traits">0</int>
+									<double key="pointSize">25</double>
+								</object>
+								<object class="NSFont" key="IBUIFont">
+									<string key="NSName">HelveticaNeue-Medium</string>
+									<double key="NSSize">25</double>
+									<int key="NSfFlags">16</int>
+								</object>
 							</object>
 							<object class="IBUILabel" id="1105141">
 								<reference key="NSNextResponder" ref="766296928"/>
 								<int key="NSvFlags">293</int>
-								<string key="NSFrame">{{215, 24}, {86, 31}}</string>
+								<string key="NSFrame">{{215, 24}, {68, 31}}</string>
 								<reference key="NSSuperview" ref="766296928"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="901881566"/>
@@ -300,9 +309,9 @@
 									<string key="name">HelveticaNeue</string>
 									<string key="family">Helvetica Neue</string>
 									<int key="traits">0</int>
-									<double key="pointSize">17</double>
+									<double key="pointSize">14</double>
 								</object>
-								<reference key="IBUIFont" ref="417204529"/>
+								<reference key="IBUIFont" ref="246537014"/>
 							</object>
 							<object class="IBUISegmentedControl" id="901881566">
 								<reference key="NSNextResponder" ref="766296928"/>
@@ -360,7 +369,7 @@
 					<object class="IBUILabel" id="663078561">
 						<reference key="NSNextResponder" ref="29443773"/>
 						<int key="NSvFlags">269</int>
-						<string key="NSFrame">{{263, 194}, {42, 21}}</string>
+						<string key="NSFrame">{{263, 188}, {42, 21}}</string>
 						<reference key="NSSuperview" ref="29443773"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>

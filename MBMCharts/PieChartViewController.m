@@ -97,15 +97,20 @@
 	[self.pieChartLeft setAnimationSpeed:1.0];
 	[self.pieChartLeft setShowPercentage:[[[self.pieChartConfigArray objectAtIndex:0] objectForKey:@"ShowPercentage"] boolValue]];
 	[self.pieChartLeft setLabelShadowColor:[UIColor colorWithHexRGB:[[self.pieChartConfigArray objectAtIndex:0] objectForKey:@"ValueShadowColor"] AndAlpha:1]];
+	[self.pieChartLeft setPieCenter:CGPointMake(self.pieChartLeft.frame.size.width/2, self.pieChartLeft.frame.size.height/2)];
+	
+	CGRect percentageFrame = self.percentageLabel.frame;
+	percentageFrame.origin.x = self.pieChartLeft.frame.size.width/2 - self.percentageLabel.frame.size.width/2;
+	percentageFrame.origin.y = self.pieChartLeft.frame.size.height/2 - self.percentageLabel.frame.size.height/2;
+    self.percentageLabel.frame = percentageFrame;
+	
 	if ([[UIDevice currentDevice] respondsToSelector:@selector(userInterfaceIdiom)] &&
 		[[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 	{
-		[self.pieChartLeft setPieCenter:CGPointMake(240, 240)];
 		[self.pieChartLeft setLabelFont:[UIFont fontWithName:@"DBLCDTempBlack" size:24]];
 	}
 	else
 	{
-		[self.pieChartLeft setPieCenter:CGPointMake(142, 96)];
 		[self.pieChartLeft setLabelFont:[UIFont fontWithName:@"DBLCDTempBlack" size:12]];
 	}
 	
@@ -115,15 +120,14 @@
     [self.pieChartRight setAnimationSpeed:1.0];
 	[self.pieChartRight setShowPercentage:NO];
 	[self.pieChartRight setLabelColor:[UIColor colorWithHexRGB:[[self.pieChartConfigArray objectAtIndex:0] objectForKey:@"LabelColor"] AndAlpha:1]];
+	[self.pieChartRight setPieCenter:CGPointMake(self.pieChartRight.frame.size.width/2, self.pieChartRight.frame.size.height/2)];
 	if ([[UIDevice currentDevice] respondsToSelector:@selector(userInterfaceIdiom)] &&
 		[[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 	{
-		[self.pieChartLeft setPieCenter:CGPointMake(240, 240)];
 		[self.percentageLabel.layer setCornerRadius:90];
 	}
 	else
 	{
-		[self.pieChartLeft setPieCenter:CGPointMake(142, 96)];
 		[self.percentageLabel.layer setCornerRadius:15];
 	}
 
