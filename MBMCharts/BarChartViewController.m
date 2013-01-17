@@ -55,7 +55,9 @@
 {
 	[super viewWillAppear:animated];
 	//View is sized properly so set chartRect
-	[self.barChart setChartRect:self.view.frame];
+	if ([[UIDevice currentDevice] respondsToSelector:@selector(userInterfaceIdiom)] &&
+		[[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
+		[self.barChart setChartRect:self.view.frame];
 	[self setUpChart];
 }
 
