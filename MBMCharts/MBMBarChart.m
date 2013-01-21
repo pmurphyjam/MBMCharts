@@ -178,18 +178,19 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
 			fontSize = FONT_SIZE_IPAD;
 			barLabelFontSize = BAR_LABEL_FONT_SIZE_IPAD;
 			stepValueAxisY = STEP_AXIS_Y_IPAD;
+			self.labelFont = [UIFont boldSystemFontOfSize:15];
 		}
 		else
 		{
 			fontSize = FONT_SIZE_IPHONE;
 			barLabelFontSize = BAR_LABEL_FONT_SIZE_IPHONE;
 			stepValueAxisY = STEP_AXIS_Y_IPHONE;
+			self.labelFont = [UIFont boldSystemFontOfSize:10];
 		}
 		paddingTop = PLOT_PADDING_TOP;
 		paddingBotom = PLOT_PADDING_BOTTOM;
         self.barRect = frame;
 		self.barPoint = CGPointMake(frame.origin.x, frame.origin.y);
-        self.labelFont = [UIFont boldSystemFontOfSize:MAX((int)10, 5)];
         _valueColor = [UIColor blackColor];
 		_valueShadowColor = [UIColor clearColor];
 		colorAxisY = [UIColor blackColor];
@@ -221,12 +222,14 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
 			fontSize = FONT_SIZE_IPAD;
 			barLabelFontSize = BAR_LABEL_FONT_SIZE_IPAD;
 			stepValueAxisY = STEP_AXIS_Y_IPAD;
+			self.labelFont = [UIFont boldSystemFontOfSize:15];
 		}
 		else
 		{
 			fontSize = FONT_SIZE_IPHONE;
 			barLabelFontSize = BAR_LABEL_FONT_SIZE_IPHONE;
 			stepValueAxisY = STEP_AXIS_Y_IPHONE;
+			self.labelFont = [UIFont boldSystemFontOfSize:10];
 		}
 		paddingTop = PLOT_PADDING_TOP;
 		paddingBotom = PLOT_PADDING_BOTTOM;
@@ -234,7 +237,6 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
         CGRect bounds = [[self layer] bounds];
         self.barRect = bounds;
 		self.barPoint = CGPointMake(bounds.origin.x, bounds.origin.y);
-        self.labelFont = [UIFont boldSystemFontOfSize:MAX((int)10, 5)];
         _valueColor = [UIColor blackColor];
 		_valueShadowColor = [UIColor clearColor];
 		colorAxisY = [UIColor blackColor];
