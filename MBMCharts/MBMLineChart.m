@@ -215,6 +215,7 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 			stepValueAxisY = STEP_AXIS_Y_IPAD;
 			self.lineRadius = LINE_CHART_POINT_RADIUS_IPAD;
 			_selectedLineStroke = LINE_STROKE_WIDTH_IPAD;
+			self.labelFont = [UIFont boldSystemFontOfSize:15];
 		}
 		else
 		{
@@ -222,7 +223,8 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 			barLabelFontSize = BAR_LABEL_FONT_SIZE_IPHONE;
 			stepValueAxisY = STEP_AXIS_Y_IPHONE;
 			self.lineRadius = LINE_CHART_POINT_RADIUS_IPHONE;
-			_selectedLineStroke = LINE_STROKE_WIDTH_IPAD;
+			_selectedLineStroke = LINE_STROKE_WIDTH_IPHONE;
+			self.labelFont = [UIFont boldSystemFontOfSize:10];
 		}
 		paddingTop = PLOT_PADDING_TOP;
 		paddingBotom = PLOT_PADDING_BOTTOM;
@@ -230,7 +232,6 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 		self.linePoint = CGPointMake(frame.origin.x, frame.origin.y);
         self.lineHeight = MIN(frame.size.width/2, frame.size.height/2) - 10;
         self.numberOfLines = 2;
-        self.labelFont = [UIFont boldSystemFontOfSize:MAX((int)10, 5)];
         _labelColor = [UIColor whiteColor];
         _labelShadowColor = [UIColor clearColor];
 		colorAxisY = [UIColor blackColor];
@@ -263,6 +264,7 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 			stepValueAxisY = STEP_AXIS_Y_IPAD;
 			self.lineRadius = LINE_CHART_POINT_RADIUS_IPAD;
 			_selectedLineStroke = LINE_STROKE_WIDTH_IPAD;
+			self.labelFont = [UIFont boldSystemFontOfSize:15];
 		}
 		else
 		{
@@ -271,6 +273,7 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 			stepValueAxisY = STEP_AXIS_Y_IPHONE;
 			self.lineRadius = LINE_CHART_POINT_RADIUS_IPHONE;
 			_selectedLineStroke = LINE_STROKE_WIDTH_IPHONE;
+			self.labelFont = [UIFont boldSystemFontOfSize:10];
 		}
 		paddingTop = PLOT_PADDING_TOP;
 		paddingBotom = PLOT_PADDING_BOTTOM;
@@ -279,7 +282,6 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 		self.linePoint = CGPointMake(bounds.origin.x, bounds.origin.y);
         self.lineHeight = MIN(bounds.size.width/2, bounds.size.height/2) - 10;
         self.numberOfLines = 2;
-        self.labelFont = [UIFont boldSystemFontOfSize:MAX((int)10, 5)];
         _labelColor = [UIColor whiteColor];
 		_labelShadowColor = [UIColor clearColor];
 		colorAxisY = [UIColor blackColor];
