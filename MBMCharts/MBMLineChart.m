@@ -207,23 +207,25 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
         _selectedLineIndex = -1;
         _animations = [[NSMutableArray alloc] init];
         _animationSpeed = 0.5;
-        _selectedLineStroke = 3.0;
 		if ([[UIDevice currentDevice] respondsToSelector:@selector(userInterfaceIdiom)] &&
 			[[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 		{
 			fontSize = FONT_SIZE_IPAD;
 			barLabelFontSize = BAR_LABEL_FONT_SIZE_IPAD;
 			stepValueAxisY = STEP_AXIS_Y_IPAD;
+			self.lineRadius = LINE_CHART_POINT_RADIUS_IPAD;
+			_selectedLineStroke = LINE_STROKE_WIDTH_IPAD;
 		}
 		else
 		{
 			fontSize = FONT_SIZE_IPHONE;
 			barLabelFontSize = BAR_LABEL_FONT_SIZE_IPHONE;
 			stepValueAxisY = STEP_AXIS_Y_IPHONE;
+			self.lineRadius = LINE_CHART_POINT_RADIUS_IPHONE;
+			_selectedLineStroke = LINE_STROKE_WIDTH_IPAD;
 		}
 		paddingTop = PLOT_PADDING_TOP;
 		paddingBotom = PLOT_PADDING_BOTTOM;
-		self.lineRadius = LINE_CHART_POINT_RADIUS;
 		chartRect = frame;
 		self.linePoint = CGPointMake(frame.origin.x, frame.origin.y);
         self.lineHeight = MIN(frame.size.width/2, frame.size.height/2) - 10;
@@ -253,23 +255,25 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
         _selectedLineIndex = -1;
         _animations = [[NSMutableArray alloc] init];
         _animationSpeed = 0.5;
-        _selectedLineStroke = 3.0;
 		if ([[UIDevice currentDevice] respondsToSelector:@selector(userInterfaceIdiom)] &&
 			[[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 		{
 			fontSize = FONT_SIZE_IPAD;
 			barLabelFontSize = BAR_LABEL_FONT_SIZE_IPAD;
 			stepValueAxisY = STEP_AXIS_Y_IPAD;
+			self.lineRadius = LINE_CHART_POINT_RADIUS_IPAD;
+			_selectedLineStroke = LINE_STROKE_WIDTH_IPAD;
 		}
 		else
 		{
 			fontSize = FONT_SIZE_IPHONE;
 			barLabelFontSize = BAR_LABEL_FONT_SIZE_IPHONE;
 			stepValueAxisY = STEP_AXIS_Y_IPHONE;
+			self.lineRadius = LINE_CHART_POINT_RADIUS_IPHONE;
+			_selectedLineStroke = LINE_STROKE_WIDTH_IPHONE;
 		}
 		paddingTop = PLOT_PADDING_TOP;
 		paddingBotom = PLOT_PADDING_BOTTOM;
-		self.lineRadius = LINE_CHART_POINT_RADIUS;
 		chartRect = self.bounds;
 		CGRect bounds = [[self layer] bounds];
 		self.linePoint = CGPointMake(bounds.origin.x, bounds.origin.y);
