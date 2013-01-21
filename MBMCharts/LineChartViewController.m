@@ -36,7 +36,6 @@
 	else
 	{
 		[[NSBundle mainBundle] loadNibNamed:@"LineChartViewController" owner:self options:nil];
-		NSLog(@"LineChartVCtrl : loadView : iPhone Nib");
 	}
 }
 
