@@ -189,6 +189,8 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
     CGPathAddRelativeArc(path, NULL, toPoint.x, toPoint.y, radius, angle, 2 * M_PI);
     if(angle != 0)
         CGPathAddLineToPoint(path, NULL, shorterToPoint.x,shorterToPoint.y);
+	
+	CGPathCloseSubpath(path);
 	return path;
 }
 
@@ -547,7 +549,6 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 - (NSInteger)getCurrentSelectedOnTouch:(CGPoint)point
 {
     __block NSUInteger selectedIndex = -1;
-    
     CGAffineTransform transform = CGAffineTransformIdentity;
     
     CALayer *parentLayer = [_lineView layer];
@@ -556,8 +557,11 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
     [lineLayers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         LineLayer *lineLayer = (LineLayer *)obj;
         CGPathRef path = [lineLayer path];
-        
-        if (CGPathContainsPoint(path, &transform, point, 0)) {
+		CGRect pathRect = CGPathGetPathBoundingBox(path);
+		//Improve touch detection by determining if point is within path's rectangle
+		//otherwise iPhone will not detect touch events very well
+		BOOL withInRect = CGRectContainsPoint(pathRect,point);
+        if (CGPathContainsPoint(path, &transform, point, 0) || withInRect) {
             [lineLayer setLineWidth:_selectedLineStroke];
             [lineLayer setLineJoin:kCALineJoinRound];
             [lineLayer setZPosition:MAXFLOAT];
