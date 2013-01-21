@@ -186,7 +186,8 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 	CGPoint shorterToPoint = [[trigDic objectForKey:@"NewPoint"] CGPointValue];
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathAddRelativeArc(path, NULL, toPoint.x, toPoint.y, radius, angle, 2 * M_PI);
-	CGPathAddLineToPoint(path, NULL, shorterToPoint.x,shorterToPoint.y);
+    if(angle != 0)
+        CGPathAddLineToPoint(path, NULL, shorterToPoint.x,shorterToPoint.y);
 	return path;
 }
 
