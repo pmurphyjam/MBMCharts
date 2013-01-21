@@ -106,6 +106,7 @@
 }
 
 static NSUInteger kDefaultLineZOrder = 100;
+static NSUInteger kDefaultLineZOrderFront = 101;
 
 @synthesize dataSource = _dataSource;
 @synthesize delegate = _delegate;
@@ -151,7 +152,7 @@ static NSUInteger kDefaultLineZOrder = 100;
 	return newColor;
 }
 
-static NSDictionary* trigMethod(CGPoint fromPoint, CGPoint toPoint ,CGFloat radius)
+static NSDictionary* trigMethod(CGPoint fromPoint, CGPoint toPoint ,CGFloat radius,CGFloat lineStroke)
 {
 	CGPoint shorterToPoint = CGPointMake(fromPoint.x, fromPoint.y);
 	//Do some Trig
@@ -162,9 +163,9 @@ static NSDictionary* trigMethod(CGPoint fromPoint, CGPoint toPoint ,CGFloat radi
 	if(hyp > 0)
 		angle = atan2f(dy, dx) + M_PI;
 	
-	CGFloat obs = sinf(angle)*(hyp - radius);
+	CGFloat obs = sinf(angle)*(hyp - (radius + lineStroke/2));
 	CGFloat newY = toPoint.y + obs;
-	CGFloat adj = cosf(angle)*(hyp - radius);
+	CGFloat adj = cosf(angle)*(hyp - (radius +lineStroke/2));
 	CGFloat newX = toPoint.x + adj;
 	
 	if(hyp > 0)
@@ -177,10 +178,10 @@ static NSDictionary* trigMethod(CGPoint fromPoint, CGPoint toPoint ,CGFloat radi
 	return trigDic;
 }
 
-static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, CGFloat radius)
+static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, CGFloat radius,CGFloat lineStroke)
 {
     NDLog(@"MBMLineChart : CGPathCreatePathFromPoint : fromPoint : x = %f : y = %f : toPoint : x = %f : y = %f  ",fromPoint.x,fromPoint.y,toPoint.x,toPoint.y);
-	NSDictionary *trigDic = trigMethod(fromPoint,toPoint,radius);
+	NSDictionary *trigDic = trigMethod(fromPoint,toPoint,radius,lineStroke);
 	NDLog(@"MBMLineChart : CGPathCreatePathFromPoint : trigDic = %@ ",trigDic);
 	CGFloat angle = [[trigDic objectForKey:@"Angle"] floatValue];
 	CGPoint shorterToPoint = [[trigDic objectForKey:@"NewPoint"] CGPointValue];
@@ -304,6 +305,8 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
         CGPoint currPos = layer.position;
 		CALayer *labelLayer = [[layer sublayers] objectAtIndex:0];
 		[labelLayer setHidden:NO];
+		//Bring Label to Front
+		[layer setZPosition:kDefaultLineZOrderFront];
         CGPoint newPos = CGPointMake(currPos.x + 0, currPos.y - 0);
         layer.position = newPos;
         layer.isSelected = YES;
@@ -316,6 +319,8 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
     LineLayer *layer = [_lineView.layer.sublayers objectAtIndex:index];
     if (layer) {
 		CALayer *labelLayer = [[layer sublayers] objectAtIndex:0];
+		//Send Label back to usual position
+		[layer setZPosition:kDefaultLineZOrder];
 		[labelLayer setHidden:YES];
         layer.position = CGPointMake(0, 0);
         layer.isSelected = NO;
@@ -453,8 +458,8 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
                     fromPoint = toScaledPoint;
 			}
 
-			fromPath = CGPathCreatePathFromPoint(CGPointMake(fromPoint.x,valueY),CGPointMake(point.x,valueY),_lineRadius);
-			toPath = CGPathCreatePathFromPoint(fromPoint,toScaledPoint,_lineRadius);
+			fromPath = CGPathCreatePathFromPoint(CGPointMake(fromPoint.x,valueY),CGPointMake(point.x,valueY),_lineRadius,_selectedLineStroke);
+			toPath = CGPathCreatePathFromPoint(fromPoint,toScaledPoint,_lineRadius,_selectedLineStroke);
 						
 			[layer createLineAnimationForKey:@"point"
 									   fromValue:[NSValue valueWithCGPoint:CGPointMake(point.x,valueY)]
@@ -583,9 +588,10 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 {
     CALayer *parentLayer = [_lineView layer];
     NSArray *lineLayers = [parentLayer sublayers];
-    
+
     for (LineLayer *lineLayer in lineLayers) {
-        [lineLayer setZPosition:kDefaultLineZOrder];
+		if(![lineLayer isSelected])
+			[lineLayer setZPosition:kDefaultLineZOrder];
     }
 }
 
