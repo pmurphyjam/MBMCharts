@@ -199,44 +199,51 @@
         {
             NSNumber *pieValue = [NSNumber numberWithInt:arc4random()%100+20];
 			NSInteger baseInt = arc4random() % 16777216;
-			NSString *pieColorVal = [NSString stringWithFormat:@"%06X", baseInt];
-			UIColor *pieColor = [UIColor colorWithHexRGB:pieColorVal AndAlpha:1.0];
-			NSDictionary *pieDic = [NSDictionary dictionaryWithObjectsAndKeys:pieValue,@"PieValue",pieColor,@"PieColor",nil];
+			NSString *pieColor = [NSString stringWithFormat:@"%06X", baseInt];
+			NSDictionary *pieDic = [NSDictionary dictionaryWithObjectsAndKeys:pieValue,@"Value",pieColor,@"Color",nil];
             NSInteger index = 0;
-            if(self.pieDicArray.count > 0)
+            if(self.pieChartDataArray.count > 0) 
             {
                 switch (self.indexOfSlices.selectedSegmentIndex) {
                     case 1:
-                        index = rand()%self.pieDicArray.count;
+                        index = rand()%self.pieChartDataArray.count; 
                         break;
                     case 2:
-                        index = self.pieDicArray.count - 1;
+                        index = self.pieChartDataArray.count - 1; 
                         break;
                 }
             }
-			[_pieDicArray insertObject:pieDic atIndex:index];
+			[_pieChartDataArray insertObject:pieDic atIndex:index]; 
         }
     }
     else if (num < 0)
     {
-        if(self.pieDicArray.count <= 0) return;
+        if(self.pieChartDataArray.count <= 0) return; 
         for (int n=0; n < abs(num); n++)
         {
             NSInteger index = 0;
-            if(self.pieDicArray.count > 0)
+            if(self.pieChartDataArray.count > 0) 
             {
                 switch (self.indexOfSlices.selectedSegmentIndex) {
                     case 1:
-                        index = rand()%self.pieDicArray.count;
+                        index = rand()%self.pieChartDataArray.count; 
                         break;
                     case 2:
-                        index = self.pieDicArray.count - 1;
+                        index = self.pieChartDataArray.count - 1; 
                         break;
                 }
-                [_pieDicArray removeObjectAtIndex:index];
+                [_pieChartDataArray removeObjectAtIndex:index]; 
             }
         }
     }
+	[_pieDicArray removeAllObjects];
+	for (NSDictionary *pieInfo in self.pieChartDataArray)
+	{
+		NSNumber *pieValue = [NSNumber numberWithFloat:[[pieInfo objectForKey:@"Value"] floatValue]];
+		UIColor *pieColor = [UIColor colorWithHexRGB:[pieInfo objectForKey:@"Color"] AndAlpha:1.0];
+		NSDictionary *pieDic = [NSDictionary dictionaryWithObjectsAndKeys:pieValue,@"PieValue",pieColor,@"PieColor",nil];
+		[_pieDicArray addObject:pieDic];
+	}
     [self.pieChartLeft reloadData];
     [self.pieChartRight reloadData];
 }

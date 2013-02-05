@@ -419,6 +419,8 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
             [layer setFillColor:[self backgroundColor].CGColor];
             [layer setDelegate:nil];
             [layer setZPosition:0];
+			[layer setPath:nil];
+			[layer setStrokeColor:[[UIColor clearColor] CGColor]];
             CATextLayer *textLayer = [[layer sublayers] objectAtIndex:0];
             [textLayer setHidden:YES];
         }
