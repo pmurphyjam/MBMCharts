@@ -61,40 +61,61 @@
 	[self setUpChart];
 }
 
+-(NSString*)getRandomColor
+{
+    NSInteger baseInt = arc4random() % 16777216;
+    NSString *hexColor = [NSString stringWithFormat:@"%06X", baseInt];
+	return hexColor;
+}
+
+-(NSNumber*)getRandomNum:(BOOL)type seed:(int)seed
+{
+	int seedType = 20;
+	if(type)
+		seedType = 40;
+	
+	NSNumber *randomNum = [NSNumber numberWithInt:arc4random()%seed+seedType];
+	return randomNum;
+}
+
+-(NSMutableArray*)createLineChart:(NSDictionary *)dataDic
+{
+	int seedInt = [[dataDic objectForKey:@"SEED"] intValue];;
+    int rows = [[dataDic objectForKey:@"ROWS"] intValue];
+    int secs = [[dataDic objectForKey:@"SECS"] intValue];
+    NDLog(@"LineChartVCtrl : createLineChart : dataDic = %@", dataDic);
+    NSArray *monthNames = [NSArray arrayWithObjects:@"Jan",@"Feb",@"Mar",@"Apr",@"May",@"Jun",@"Jul",@"Aug",@"Sep",@"Oct",@"Nov",@"Dec",nil];    
+    NSMutableArray *secChartDataArray = [[[NSMutableArray alloc] init] autorelease];
+
+    for (int sec = 0; sec < secs; sec++)
+    {
+        NSMutableArray *rowChartDataArray = [[NSMutableArray alloc] init];
+        for (int row = 0; row < rows; row++)
+        {
+            NSString *color = [self getRandomColor];
+            NSNumber *value = [self getRandomNum:NO seed:seedInt];
+            NSDictionary *chartData = [NSDictionary dictionaryWithObjectsAndKeys:[monthNames objectAtIndex:row % 12],@"Label",color,@"LabelColor",value,@"Value",color,@"Color",nil];
+            [rowChartDataArray addObject:chartData];
+        }
+        [secChartDataArray addObject:rowChartDataArray];
+        [rowChartDataArray release];
+    }
+    NDLog(@"LineChartVCtrl : createLineChart : secChartDataArray = %@", secChartDataArray);
+	return secChartDataArray;
+}
+
 - (void) setUpChart
 {
-	
 	NSDictionary *chartConfigData = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES],@"showAxisY",[NSNumber numberWithBool:YES],@"showAxisX",@"2ca095",@"ColorAxisY",@"0110ad",@"ColorAxis",[NSNumber numberWithBool:YES],@"PlotVerticalLines",[NSNumber numberWithBool:YES],@"AddHorizontalLabels",@"ff0000",@"ValueColor",@"0000ff",@"ValueShadowColor",nil];
 	[self.lineChartConfigArray addObject:chartConfigData];
 	
-	NSDictionary *chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Jan",@"Label",@"3e5273",@"LabelColor",@"19",@"Value",@"3e5273",@"Color",nil];
-	[_lineChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Feb",@"Label",@"2ca095",@"LabelColor",@"34",@"Value",@"2ca095",@"Color",nil];
-	[_lineChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Mar",@"Label",@"566967",@"LabelColor",@"40",@"Value",@"566967",@"Color",nil];
-	[_lineChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Apr",@"Label",@"016fad",@"LabelColor",@"80",@"Value",@"016fad",@"Color",nil];
-	[_lineChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"May",@"Label",@"47a939",@"LabelColor",@"87",@"Value",@"47a939",@"Color",nil];
-	[_lineChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Jun",@"Label",@"336981",@"LabelColor",@"100",@"Value",@"336981",@"Color",nil];
-	[_lineChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Jul",@"Label",@"b8a23d",@"LabelColor",@"160",@"Value",@"b8a23d",@"Color",nil];
-	[_lineChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Aug",@"Label",@"2ca095",@"LabelColor",@"267",@"Value",@"2ca095",@"Color",nil];
-	[_lineChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Sep",@"Label",@"566967",@"LabelColor",@"276",@"Value",@"566967",@"Color",nil];
-	[_lineChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Oct",@"Label",@"016fad",@"LabelColor",@"303",@"Value",@"016fad",@"Color",nil];
-	[_lineChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Nov",@"Label",@"b8a23d",@"LabelColor",@"356",@"Value",@"b8a23d",@"Color",nil];
-	[_lineChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Dec",@"Label",@"3e5273",@"LabelColor",@"436",@"Value",@"3e5273",@"Color",nil];
-	[_lineChartDataArray addObject:chartData];
-		
+    NSDictionary *dataDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:100],@"SEED",[NSNumber numberWithInt:12],@"ROWS",[NSNumber numberWithInt:2],@"SECS",nil];
+    NSMutableArray *tempArray = [self createLineChart:dataDic];
+    [_lineChartDataArray setArray:tempArray];
+
 	[self.lineChart setShowAxisX:[[[self.lineChartConfigArray objectAtIndex:0] objectForKey:@"showAxisX"] boolValue]];
 	[self.lineChart setShowAxisY:[[[self.lineChartConfigArray objectAtIndex:0] objectForKey:@"showAxisY"] boolValue]];
-	[self.lineChart setNumberOfElements:[self.lineChartDataArray count]];
+	[self.lineChart setNumberOfElements:[[self.lineChartDataArray objectAtIndex:0] count]];
 	[self.lineChart setPlotVerticalLines:[[[self.lineChartConfigArray objectAtIndex:0] objectForKey:@"PlotVerticalLines"] boolValue]];
 	[self.lineChart setAddHorizontalLabels:[[[self.lineChartConfigArray objectAtIndex:0] objectForKey:@"AddHorizontalLabels"] boolValue]];
 	[self.lineChart setColorAxisY:[UIColor colorWithHexRGB:[[self.lineChartConfigArray objectAtIndex:0] objectForKey:@"ColorAxisY"] AndAlpha:1]];
@@ -104,26 +125,31 @@
 	
 	[self.lineChart calculateChartFrame];
 	
-	CGFloat xPos = self.lineChart.leftPadding + self.lineChart.labelSizeAxisY.width + self.lineChart.barWidth/2;
-
 	CGFloat barHeight = 0;
-	for (NSDictionary *lineInfo in self.lineChartDataArray)
-	{
-		barHeight = [[lineInfo objectForKey:@"Value"] floatValue];
-		UIColor *lineColor = [UIColor colorWithHexRGB:[lineInfo objectForKey:@"Color"] AndAlpha:1.0];
-		UIColor *lineLabelColor = [UIColor colorWithHexRGB:[lineInfo objectForKey:@"LabelColor"] AndAlpha:1.0];
-        NSValue *pointValue = [NSValue valueWithCGPoint:CGPointMake(xPos, barHeight)];
-		NSString *label = [lineInfo objectForKey:@"Label"];
-		xPos = xPos + self.lineChart.barWidth + self.lineChart.barInterval;
-		[self.lineChart setDelegate:self];
-		[self.lineChart setDataSource:self];
-		[self.lineChart setNumberOfLines:[self.lineChartDataArray count]];
-		[self.lineChart setAnimationSpeed:1.0];
-		[self.lineChart setUserInteractionEnabled:YES];
-		NSNumber *value = [NSNumber numberWithDouble:barHeight];
-		NSDictionary *lineDic = [NSDictionary dictionaryWithObjectsAndKeys:value,@"LineValue",pointValue,@"LinePoint",lineColor,@"LineColor",lineLabelColor,@"LabelColor",label,@"LineLabel",nil];
-		[_lineDicArray addObject:lineDic];
-	}
+    for (int section = 0; section < [self.lineChartDataArray count]; section++)
+    {
+        NSMutableArray *rowChartDataArray = [[NSMutableArray alloc] init];
+        CGFloat xPos = self.lineChart.leftPadding + self.lineChart.labelSizeAxisY.width + self.lineChart.barWidth/2;
+        for (NSDictionary *lineInfo in [self.lineChartDataArray objectAtIndex:section])
+        {
+            barHeight = [[lineInfo objectForKey:@"Value"] floatValue];
+            UIColor *lineColor = [UIColor colorWithHexRGB:[lineInfo objectForKey:@"Color"] AndAlpha:1.0];
+            UIColor *lineLabelColor = [UIColor colorWithHexRGB:[lineInfo objectForKey:@"LabelColor"] AndAlpha:1.0];
+            NSValue *pointValue = [NSValue valueWithCGPoint:CGPointMake(xPos, barHeight)];
+            NSString *label = [lineInfo objectForKey:@"Label"];
+            xPos = xPos + self.lineChart.barWidth + self.lineChart.barInterval;
+            [self.lineChart setDelegate:self];
+            [self.lineChart setDataSource:self];
+            [self.lineChart setNumberOfLines:[self.lineChartDataArray count]];
+            [self.lineChart setAnimationSpeed:1.0];
+            [self.lineChart setUserInteractionEnabled:YES];
+            NSNumber *value = [NSNumber numberWithDouble:barHeight];
+            NSDictionary *lineDic = [NSDictionary dictionaryWithObjectsAndKeys:value,@"LineValue",pointValue,@"LinePoint",lineColor,@"LineColor",lineLabelColor,@"LabelColor",label,@"LineLabel",nil];
+            [rowChartDataArray addObject:lineDic];
+        }
+        [_lineDicArray addObject:rowChartDataArray];
+        [rowChartDataArray release];
+    }
 	[self.lineChart drawChart:_lineDicArray];
 }
 
@@ -155,16 +181,20 @@
     self.numOfLines.text = [NSString stringWithFormat:@"%d",num];
 }
 
-- (IBAction)clearLines {
-	for(int index = 0; index < _lineDicArray.count; index ++)
-	{
-		NSMutableDictionary *lineDic = [[_lineDicArray objectAtIndex:index] mutableCopy];
-        CGPoint linePointInst = [[lineDic objectForKey:@"LinePoint"] CGPointValue];
-		NSValue *linePointValue = [NSValue valueWithCGPoint:CGPointMake(linePointInst.x, 0)];
-		[lineDic setObject:linePointValue forKey:@"LinePoint"];
-		[_lineDicArray replaceObjectAtIndex:index withObject:lineDic];
-		[lineDic release];
-	}
+- (IBAction)clearLines
+{
+    for (int section = 0; section < [_lineDicArray count]; section++)
+    {
+        for(int index = 0; index < [[_lineDicArray objectAtIndex:section] count]; index ++)
+        {
+            NSMutableDictionary *lineDic = [[[_lineDicArray objectAtIndex:section] objectAtIndex:index] mutableCopy];
+            CGPoint linePointInst = [[lineDic objectForKey:@"LinePoint"] CGPointValue];
+            NSValue *linePointValue = [NSValue valueWithCGPoint:CGPointMake(linePointInst.x, 0)];
+            [lineDic setObject:linePointValue forKey:@"LinePoint"];
+            [[_lineDicArray objectAtIndex:section] replaceObjectAtIndex:index withObject:lineDic];
+            [lineDic release];
+        }
+    }
 	[self.lineChart reloadData];
 }
 
@@ -230,70 +260,83 @@
 	[self.lineChart setNumberOfElements:[self.lineChartDataArray count]];
 	[self.lineChart calculateChartFrame];
     
-	CGFloat xPos = self.lineChart.leftPadding + self.lineChart.labelSizeAxisY.width + self.lineChart.barWidth/2;
 	CGFloat barHeight = 0;
-	for (NSDictionary *lineInfo in self.lineChartDataArray)
-	{
-		barHeight = [[lineInfo objectForKey:@"Value"] floatValue];
-		UIColor *lineColor = [UIColor colorWithHexRGB:[lineInfo objectForKey:@"Color"] AndAlpha:1.0];
-		UIColor *lineLabelColor = [UIColor colorWithHexRGB:[lineInfo objectForKey:@"LabelColor"] AndAlpha:1.0];
-        NSValue *pointValue = [NSValue valueWithCGPoint:CGPointMake(xPos, barHeight)];
-		NSString *label = [lineInfo objectForKey:@"Label"];
-		xPos = xPos + self.lineChart.barWidth + self.lineChart.barInterval;
-		[self.lineChart setDelegate:self];
-		[self.lineChart setDataSource:self];
-		[self.lineChart setNumberOfLines:[self.lineChartDataArray count]];
-		[self.lineChart setAnimationSpeed:1.0];
-		[self.lineChart setUserInteractionEnabled:YES];
-		NSNumber *value = [NSNumber numberWithDouble:barHeight];
-		NSDictionary *barDic = [NSDictionary dictionaryWithObjectsAndKeys:value,@"LineValue",pointValue,@"LinePoint",lineColor,@"LineColor",lineLabelColor,@"LabelColor",label,@"LineLabel",nil];
-		[_lineDicArray addObject:barDic];
-	}
+    for (int section = 0; section < [self.lineChartDataArray count]; section++)
+    {
+        NSMutableArray *rowChartDataArray = [[NSMutableArray alloc] init];
+        CGFloat xPos = self.lineChart.leftPadding + self.lineChart.labelSizeAxisY.width + self.lineChart.barWidth/2;
+        for (NSDictionary *lineInfo in [self.lineChartDataArray objectAtIndex:section])
+        {
+            barHeight = [[lineInfo objectForKey:@"Value"] floatValue];
+            UIColor *lineColor = [UIColor colorWithHexRGB:[lineInfo objectForKey:@"Color"] AndAlpha:1.0];
+            UIColor *lineLabelColor = [UIColor colorWithHexRGB:[lineInfo objectForKey:@"LabelColor"] AndAlpha:1.0];
+            NSValue *pointValue = [NSValue valueWithCGPoint:CGPointMake(xPos, barHeight)];
+            NSString *label = [lineInfo objectForKey:@"Label"];
+            xPos = xPos + self.lineChart.barWidth + self.lineChart.barInterval;
+            [self.lineChart setDelegate:self];
+            [self.lineChart setDataSource:self];
+            [self.lineChart setNumberOfLines:[self.lineChartDataArray count]];
+            [self.lineChart setAnimationSpeed:1.0];
+            [self.lineChart setUserInteractionEnabled:YES];
+            NSNumber *value = [NSNumber numberWithDouble:barHeight];
+            NSDictionary *lineDic = [NSDictionary dictionaryWithObjectsAndKeys:value,@"LineValue",pointValue,@"LinePoint",lineColor,@"LineColor",lineLabelColor,@"LabelColor",label,@"LineLabel",nil];
+            [rowChartDataArray addObject:lineDic];
+        }
+        [_lineDicArray addObject:rowChartDataArray];
+        [rowChartDataArray release];
+    }
 	[self.lineChart drawChart:_lineDicArray];
     [self.lineChart reloadData];
 }
 
 - (IBAction)updateLines
 {
-	for(int index = 0; index < _lineDicArray.count; index ++)
-	{
-		NSMutableDictionary *lineDic = [[_lineDicArray objectAtIndex:index] mutableCopy];
-		CGPoint linePointInst = [[lineDic objectForKey:@"LinePoint"] CGPointValue];
-		CGFloat lineHeight = [[lineDic objectForKey:@"LineValue"] floatValue];
-        NSValue *linePointValue = [NSValue valueWithCGPoint:CGPointMake(linePointInst.x, lineHeight)];
-		[lineDic setObject:linePointValue forKey:@"LinePoint"];
-		[_lineDicArray replaceObjectAtIndex:index withObject:lineDic];
-		[lineDic release];
-	}
+	for (int section = 0; section < [_lineDicArray count]; section++)
+    {
+        for(int index = 0; index < [[_lineDicArray objectAtIndex:section] count]; index ++)
+        {
+            NSMutableDictionary *lineDic = [[[_lineDicArray objectAtIndex:section] objectAtIndex:index] mutableCopy];
+            CGPoint linePointInst = [[lineDic objectForKey:@"LinePoint"] CGPointValue];
+            CGFloat lineHeight = [[lineDic objectForKey:@"LineValue"] floatValue];
+            NSValue *linePointValue = [NSValue valueWithCGPoint:CGPointMake(linePointInst.x, lineHeight)];
+            [lineDic setObject:linePointValue forKey:@"LinePoint"];
+            [[_lineDicArray objectAtIndex:section] replaceObjectAtIndex:index withObject:lineDic];
+            [lineDic release];
+        }
+    }
 	[self.lineChart reloadData];
 }
 
 #pragma mark - MBMLineChart Data Source
-
-- (NSUInteger)numberOfLinesInChart:(MBMLineChart *)lineChart
+- (NSUInteger)numberOfSectionsInChart:(MBMLineChart *)lineChart
 {
-    return self.lineChartDataArray.count;
+    return self.lineDicArray.count;
 }
 
-- (CGFloat)lineChart:(MBMLineChart *)lineChart valueForLineAtIndex:(NSUInteger)index
+- (NSUInteger)numberOfLinesInChart:(MBMLineChart *)lineChart forSection:(NSUInteger)section
 {
-    return [[[self.lineDicArray objectAtIndex:index] objectForKey:@"LineValue"] floatValue];
+    return [[self.lineDicArray objectAtIndex:section] count];
 }
 
-- (CGPoint)lineChart:(MBMLineChart *)lineChart pointForLineAtIndex:(NSUInteger)index
+- (CGFloat)lineChart:(MBMLineChart *)lineChart valueForLineAtIndex:(NSUInteger)index forSection:(NSUInteger)section
 {
-	return [[[self.lineDicArray objectAtIndex:index] objectForKey:@"LinePoint"] CGPointValue];
+    return [[[[self.lineDicArray objectAtIndex:section] objectAtIndex:index] objectForKey:@"LineValue"] floatValue];
 }
 
-- (UIColor *)lineChart:(MBMLineChart *)lineChart colorForLineAtIndex:(NSUInteger)index
+- (CGPoint)lineChart:(MBMLineChart *)lineChart pointForLineAtIndex:(NSUInteger)index forSection:(NSUInteger)section
 {
-	return [[self.lineDicArray objectAtIndex:index] objectForKey:@"LineColor"];
+	return [[[[self.lineDicArray objectAtIndex:section] objectAtIndex:index] objectForKey:@"LinePoint"] CGPointValue];
+}
+
+- (UIColor *)lineChart:(MBMLineChart *)lineChart colorForLineAtIndex:(NSUInteger)index forSection:(NSUInteger)section
+{
+	return [[[self.lineDicArray objectAtIndex:section] objectAtIndex:index] objectForKey:@"LineColor"];
 }
 
 #pragma mark - MBMLineChart Delegate
-- (void)lineChart:(MBMLineChart *)lineChart didSelectLineAtIndex:(NSUInteger)index
+- (void)lineChart:(MBMLineChart *)lineChart didSelectLineAtIndex:(NSUInteger)index forSection:(NSUInteger)section
 {
-    int value = [[[self.lineDicArray objectAtIndex:index] objectForKey:@"LineValue"] intValue];
+    int value = [[[[self.lineDicArray objectAtIndex:section] objectAtIndex:index] objectForKey:@"LineValue"] intValue];
     self.selectedLineLabel.text = [NSString stringWithFormat:@"%d",value];
 }
 

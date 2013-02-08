@@ -11,20 +11,22 @@
 @class MBMLineChart;
 @protocol MBMLineChartDataSource <NSObject>
 @required
-- (NSUInteger)numberOfLinesInChart:(MBMLineChart *)lineChart;
-- (CGFloat)lineChart:(MBMLineChart *)lineChart valueForLineAtIndex:(NSUInteger)index;
-- (CGPoint)lineChart:(MBMLineChart *)lineChart pointForLineAtIndex:(NSUInteger)index;
+- (NSUInteger)numberOfSectionsInChart:(MBMLineChart *)lineChart;
+- (NSUInteger)numberOfLinesInChart:(MBMLineChart *)lineChart forSection:(NSUInteger)section;
+- (CGFloat)lineChart:(MBMLineChart *)lineChart valueForLineAtIndex:(NSUInteger)index forSection:(NSUInteger)section;
+- (CGPoint)lineChart:(MBMLineChart *)lineChart pointForLineAtIndex:(NSUInteger)index forSection:(NSUInteger)section;
 @optional
-- (UIColor *)lineChart:(MBMLineChart *)lineChart colorForLineAtIndex:(NSUInteger)index;
-- (NSString *)lineChart:(MBMLineChart *)lineChart textForLineAtIndex:(NSUInteger)index;
+- (UIColor *)lineChart:(MBMLineChart *)lineChart colorForLineAtIndex:(NSUInteger)index forSection:(NSUInteger)section;
+- (NSString *)lineChart:(MBMLineChart *)lineChart textForLineAtIndex:(NSUInteger)index forSection:(NSUInteger)section;
 @end
 
 @protocol MBMLineChartDelegate <NSObject>
 @optional
-- (void)lineChart:(MBMLineChart *)lineChart willSelectLineAtIndex:(NSUInteger)index;
-- (void)lineChart:(MBMLineChart *)lineChart didSelectLineAtIndex:(NSUInteger)index;
-- (void)lineChart:(MBMLineChart *)lineChart willDeselectLineAtIndex:(NSUInteger)index;
-- (void)lineChart:(MBMLineChart *)lineChart didDeselectLineAtIndex:(NSUInteger)index;
+- (void)lineChart:(MBMLineChart *)lineChart willSelectLineAtIndex:(NSUInteger)index forSection:(NSUInteger)section;
+- (void)lineChart:(MBMLineChart *)lineChart didSelectLineAtIndex:(NSUInteger)index forSection:(NSUInteger)section
+;
+- (void)lineChart:(MBMLineChart *)lineChart willDeselectLineAtIndex:(NSUInteger)index forSection:(NSUInteger)section;
+- (void)lineChart:(MBMLineChart *)lineChart didDeselectLineAtIndex:(NSUInteger)index forSection:(NSUInteger)section;
 @end
 
 @interface MBMLineChart : UIView

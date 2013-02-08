@@ -8,6 +8,7 @@
 
 #import "MBMLineChart.h"
 #import "UIColorCategory.h"
+//#define DEBUG
 #import "MBMChartDefines.h"
 #import <QuartzCore/QuartzCore.h>
 #define RGBA(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
@@ -16,6 +17,8 @@
 @property (nonatomic, assign) CGFloat value;
 @property (nonatomic, assign) CGPoint point;
 @property (nonatomic, assign) BOOL isSelected;
+@property (nonatomic, assign) NSUInteger section;
+@property (nonatomic, assign) NSUInteger index;
 @property (nonatomic, retain) NSString *text;
 - (void)createLineAnimationForKey:(NSString *)key fromValue:(NSValue *)from toValue:(NSValue *)to Delegate:(id)delegate;
 - (void)createPathAnimationForKey:(NSString *)key fromValue:(CGPathRef)from toValue:(CGPathRef)to Delegate:(id)delegate;
@@ -26,10 +29,12 @@
 @synthesize value = _value;
 @synthesize point = _point;
 @synthesize isSelected = _isSelected;
+@synthesize section = _section;
+@synthesize index = _index;
 
 - (NSString*)description
 {
-    return [NSString stringWithFormat:@"value:%f, Point X:%f, Y:%f", _value, _point.x, _point.y];
+    return [NSString stringWithFormat:@"LineLayer : [%d,%d] : value = %f : Point : X = %f Y = %f ",_section,_index, _value, _point.x, _point.y];
 }
 
 + (BOOL)needsDisplayForKey:(NSString *)key
@@ -92,7 +97,7 @@
 - (LineLayer *)createLineLayer;
 - (CGSize)sizeThatFitsString:(NSString *)string;
 - (void)updateLabelForLayer:(LineLayer *)LineLayer value:(CGFloat)value;
-- (void)notifyDelegateOfSelectionChangeFrom:(NSUInteger)previousSelection to:(NSUInteger)newSelection;
+- (void)notifyDelegateOfSelectionChangeFrom:(NSUInteger)previousSelection to:(NSUInteger)newSelection forSection:(NSUInteger)section andRow:(NSUInteger)row;
 @end
 
 @implementation MBMLineChart
@@ -340,164 +345,170 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 - (void)reloadData
 {
     if (_dataSource && !_animationTimer)
-    {
-		CALayer *parentLayer = [_lineView layer];
+    {        
+        CALayer *parentLayer = [_lineView layer];
         NSArray *lineLayers = [parentLayer sublayers];
-		NDLog(@"MBMLineChart : reloadData : lineLayers cnt = %d",[lineLayers count]);
-		
-        _selectedLineIndex = -1;
-        [lineLayers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            LineLayer *layer = (LineLayer *)obj;
-            if(layer.isSelected)
-                [self setLineDeselectedAtIndex:idx];
-        }];
-        
-		NSUInteger lineCount = [_dataSource numberOfLinesInChart:self];
-		NDLog(@"MBMLineChart : reloadData : lineCount = %d",lineCount);
-		
-		double values[lineCount];
-		
-		for (int index = 0; index < lineCount; index++) {
-            values[index] = [_dataSource lineChart:self valueForLineAtIndex:index];
-        }
-		
-        [CATransaction begin];
-        [CATransaction setAnimationDuration:_animationSpeed];
-        
-        [_lineView setUserInteractionEnabled:NO];
-        
-		NSMutableArray *layersToRemove = [[NSMutableArray alloc] init];
-        [CATransaction setCompletionBlock:^{
+        NDLog(@"MBMLineChart : reloadData : lineLayers cnt = %d",[lineLayers count]);
+        NSUInteger sectionCount = [_dataSource numberOfSectionsInChart:self];
+        NDLog(@"MBMLineChart : reloadData : sectionCount = %d",sectionCount);
+        int indexN = 0;
+        NSMutableArray *layersToRemove = [NSMutableArray arrayWithArray:lineLayers];
+
+        for (int section = 0; section < sectionCount; section++)
+        {
+            _selectedLineIndex = -1;
+            [lineLayers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                LineLayer *layer = (LineLayer *)obj;
+                if(layer.isSelected)
+                    [self setLineDeselectedAtIndex:idx];
+            }];
+
+            NSUInteger lineCount = [_dataSource numberOfLinesInChart:self forSection:section];
+            NDLog(@"MBMLineChart : reloadData[%d] : lineCount = %d",section,lineCount);
             
-            [layersToRemove enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                [obj removeFromSuperlayer];
+            [CATransaction begin];
+            [CATransaction setAnimationDuration:_animationSpeed];
+            
+            [_lineView setUserInteractionEnabled:NO];
+            
+            [CATransaction setCompletionBlock:^{
+                
+                [layersToRemove enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    [obj removeFromSuperlayer];
+                }];
+                
+                [layersToRemove removeAllObjects];
+                
+                for(LineLayer *layer in _lineView.layer.sublayers)
+                {
+                    [layer setZPosition:kDefaultLineZOrder];
+                }
+                
+                [_lineView setUserInteractionEnabled:YES];
             }];
             
-            [layersToRemove removeAllObjects];
-			
-            for(LineLayer *layer in _lineView.layer.sublayers)
-            {
-                [layer setZPosition:kDefaultLineZOrder];
-            }
+            NSInteger diff = (lineCount * sectionCount) - [lineLayers count];
+            NDLog(@"MBMLineChart : reloadData[%d] : diff = %d : layersToRemove cnt = %d",section,diff,[layersToRemove count]);
+
+            CGPoint point = CGPointMake(0, 0);
+            CGPoint fromPoint = CGPointMake(0, 0);
+            CGPoint toScaledPoint = CGPointMake(0, 0);
+            CGFloat valueY = self.bounds.size.height-self.paddingBotom;
             
-            [_lineView setUserInteractionEnabled:YES];
-        }];
-        
-        layersToRemove = [NSMutableArray arrayWithArray:lineLayers];
-		
-        NSInteger diff = lineCount - [lineLayers count];
-        CGPoint point = CGPointMake(0, 0);
-		CGPoint fromPoint = CGPointMake(0, 0);
-        CGPoint toScaledPoint = CGPointMake(0, 0);
-		CGFloat valueY = self.bounds.size.height-self.paddingBotom;
-		
-		CGPathRef fromPath = nil;
-		CGPathRef toPath = nil;
-		
-		for(int index = 0; index < lineCount; index ++)
-		{
-			LineLayer *layer;
-			
-			if( index >= [lineLayers count] )
+            CGPathRef fromPath = nil;
+            CGPathRef toPath = nil;
+            
+            for(int index = 0; index < lineCount; index ++)
             {
-                layer = [self createLineLayer];
-                [parentLayer addSublayer:layer];
-                diff--;
-            }
-			else
-            {
-                LineLayer *onelayer = [lineLayers objectAtIndex:index];
-				if(diff == 0 || onelayer.value == (CGFloat)values[index])
-                {
-                    layer = onelayer;
-                    [layersToRemove removeObject:layer];
-                }
-				else if(diff > 0)
+                LineLayer *layer;
+                CGFloat value = [_dataSource lineChart:self valueForLineAtIndex:index forSection:section];
+
+                if( indexN >= [lineLayers count] )
                 {
                     layer = [self createLineLayer];
-                    [parentLayer insertSublayer:layer atIndex:index];
+                    [parentLayer addSublayer:layer];
                     diff--;
                 }
-				else if(diff < 0)
+                else
                 {
-					while(diff < 0)
+                    LineLayer *onelayer = [lineLayers objectAtIndex:indexN];
+                    if(diff == 0 || onelayer.value == value)
                     {
-                        [onelayer removeFromSuperlayer];
-                        [parentLayer addSublayer:onelayer];
-                        diff++;
-                        onelayer = [lineLayers objectAtIndex:index];
-                        if(onelayer.value == (CGFloat)values[index] || diff == 0)
+                        layer = onelayer;
+                        [layersToRemove removeObject:layer];
+                    }
+                    else if(diff > 0)
+                    {
+                        layer = [self createLineLayer];
+                        [parentLayer insertSublayer:layer atIndex:indexN];
+                        diff--;
+                    }
+                    else if(diff < 0)
+                    {
+                        while(diff < 0)
                         {
-                            layer = onelayer;
-                            [layersToRemove removeObject:layer];
-                            break;
+                            [onelayer removeFromSuperlayer];
+                            [parentLayer addSublayer:onelayer];
+                            diff++;
+                            onelayer = [lineLayers objectAtIndex:indexN];
+                            if(onelayer.value == value || diff == 0)
+                            {
+                                layer = onelayer;
+                                [layersToRemove removeObject:layer];
+                                break;
+                            }
                         }
                     }
-					
-				}
-				
-			}
-			
-			layer.value = values[index];
-			
-			UIColor *color = nil;
-			if([_dataSource respondsToSelector:@selector(lineChart:colorForLineAtIndex:)])
-			{
-				color = [_dataSource lineChart:self colorForLineAtIndex:index];
-				[layer setFillColor:[[UIColor clearColor] CGColor]];
-                [layer setStrokeColor:[color CGColor]];
-                [layer setLineWidth:_selectedLineStroke];
-			}
-			
-			if([_dataSource respondsToSelector:@selector(lineChart:textForLineAtIndex:)])
-            {
-                //layer.text = [_dataSource lineChart:self textForLineAtIndex:index];
-				//NDLog(@"MBMLineChart : reloadData #2: layer.text = %@",layer.text);
-            }
-			
-            [self updateLabelForLayer:layer value:values[index]];
-			
-			if([_dataSource respondsToSelector:@selector(lineChart:pointForLineAtIndex:)])
-			{
-				point = [_dataSource lineChart:self pointForLineAtIndex:index];
-                NDLog(@"MBMLineChart : reloadData : point : x = %f : y = %f",point.x,point.y);
-				toScaledPoint = CGPointMake(point.x, self.bounds.size.height-self.paddingBotom-point.y*scaleAxisY);
-				if(index == 0)
-                    fromPoint = toScaledPoint;
-			}
+                }
+                
+                layer.value = value;
+                layer.section = section;
+                layer.index = index;
 
-			fromPath = CGPathCreatePathFromPoint(CGPointMake(fromPoint.x,valueY),CGPointMake(point.x,valueY),_lineRadius,_selectedLineStroke);
-			toPath = CGPathCreatePathFromPoint(fromPoint,toScaledPoint,_lineRadius,_selectedLineStroke);
-						
-			[layer createLineAnimationForKey:@"point"
-									   fromValue:[NSValue valueWithCGPoint:CGPointMake(point.x,valueY)]
-										 toValue:[NSValue valueWithCGPoint:toScaledPoint]
-										Delegate:self];
-			
-			[layer createPathAnimationForKey:@"path"
-									fromValue:fromPath
-									  toValue:toPath
-									 Delegate:self];
-			
-			fromPoint = toScaledPoint;
-			CFRelease(fromPath);
-			CFRelease(toPath);
-		}
-		
-		[CATransaction setDisableActions:YES];
+                NDLog(@"MBMLineChart : reloadData[%d,%d]=%d : value = %f",section,index,indexN,value);
+
+                UIColor *color = nil;
+                if([_dataSource respondsToSelector:@selector(lineChart:colorForLineAtIndex:forSection:)])
+                {
+                    color = [_dataSource lineChart:self colorForLineAtIndex:index forSection:section];
+                    [layer setFillColor:[[UIColor clearColor] CGColor]];
+                    [layer setStrokeColor:[color CGColor]];
+                    [layer setLineWidth:_selectedLineStroke];
+                }
+                
+                if([_dataSource respondsToSelector:@selector(lineChart:textForLineAtIndex:forSection:)])
+                {
+                    //layer.text = [_dataSource lineChart:self textForLineAtIndex:index forSection:section];
+                    //NDLog(@"MBMLineChart : reloadData #2: layer.text = %@",layer.text);
+                }
+                
+                [self updateLabelForLayer:layer value:value];
+                
+                if([_dataSource respondsToSelector:@selector(lineChart:pointForLineAtIndex:forSection:)])
+                {
+                    point = [_dataSource lineChart:self pointForLineAtIndex:index forSection:section];
+                    toScaledPoint = CGPointMake(point.x, self.bounds.size.height-self.paddingBotom-point.y*scaleAxisY);
+                    if(index == 0)
+                        fromPoint = toScaledPoint;
+                }
+
+                fromPath = CGPathCreatePathFromPoint(CGPointMake(fromPoint.x,valueY),CGPointMake(point.x,valueY),_lineRadius,_selectedLineStroke);
+                toPath = CGPathCreatePathFromPoint(fromPoint,toScaledPoint,_lineRadius,_selectedLineStroke);
+                            
+                [layer createLineAnimationForKey:@"point"
+                                           fromValue:[NSValue valueWithCGPoint:CGPointMake(point.x,valueY)]
+                                             toValue:[NSValue valueWithCGPoint:toScaledPoint]
+                                            Delegate:self];
+                
+                [layer createPathAnimationForKey:@"path"
+                                        fromValue:fromPath
+                                          toValue:toPath
+                                         Delegate:self];
+                
+                fromPoint = toScaledPoint;
+                CFRelease(fromPath);
+                CFRelease(toPath);
+                
+                indexN++;
+            }
+            [CATransaction commit];
+
+         }//section
+                   
+        [CATransaction setDisableActions:YES];
         for(LineLayer *layer in layersToRemove)
         {
             [layer setFillColor:[self backgroundColor].CGColor];
             [layer setDelegate:nil];
             [layer setZPosition:0];
-			[layer setPath:nil];
-			[layer setPoint:CGPointMake(5024,5024)];
-			[layer setStrokeColor:[[UIColor clearColor] CGColor]];
+            [layer setPath:nil];
+            [layer setPoint:CGPointMake(5024,5024)];
+            [layer setStrokeColor:[[UIColor clearColor] CGColor]];
             CATextLayer *textLayer = [[layer sublayers] objectAtIndex:0];
             [textLayer setHidden:YES];
         }
-		[CATransaction setDisableActions:NO];
-		[CATransaction commit];
+        [CATransaction setDisableActions:NO];
+        [CATransaction commit];
 	}
 }
 
@@ -507,12 +518,11 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 {
     CALayer *parentLayer = [_lineView layer];
     NSArray *lineLayers = [parentLayer sublayers];
-	
     [lineLayers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         CGPoint presentationLayerPoint = [[[obj presentationLayer] valueForKey:@"point"] CGPointValue];
 		CGPathRef presentationLayerPath = (CGPathRef)[[obj presentationLayer] valueForKey:@"path"];
-		NDLog(@"MBMLineChart : updateTimerFired : path = %@",CGPathIsEmpty(presentationLayerPath)?@"Bad":@"Good");
-		NDLog(@"MBMLineChart : updateTimerFired :  presentationLayerFromPoint : x = %f : y = %f",presentationLayerPoint.x,presentationLayerPoint.y);
+		//NDLog(@"MBMLineChart : updateTimerFired : path = %@",CGPathIsEmpty(presentationLayerPath)?@"Bad":@"Good");
+		//NDLog(@"MBMLineChart : updateTimerFired :  presentationLayerFromPoint : x = %f : y = %f",presentationLayerPoint.x,presentationLayerPoint.y);
 		[obj setPath:presentationLayerPath];
         {
             CALayer *labelLayer = [[obj sublayers] objectAtIndex:0];
@@ -546,14 +556,14 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 
 #pragma mark - Touch Handing (Selection Notification)
 
-- (NSInteger)getCurrentSelectedOnTouch:(CGPoint)point
+- (NSDictionary*)getCurrentSelectedOnTouch:(CGPoint)point
 {
     __block NSUInteger selectedIndex = -1;
+    __block NSUInteger section = -1;
     CGAffineTransform transform = CGAffineTransformIdentity;
     
     CALayer *parentLayer = [_lineView layer];
     NSArray *lineLayers = [parentLayer sublayers];
-    
     [lineLayers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         LineLayer *lineLayer = (LineLayer *)obj;
         CGPathRef path = [lineLayer path];
@@ -566,11 +576,15 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
             [lineLayer setLineJoin:kCALineJoinRound];
             [lineLayer setZPosition:MAXFLOAT];
             selectedIndex = idx;
+            section = lineLayer.section;
         } else {
             [lineLayer setZPosition:kDefaultLineZOrder];
         }
     }];
-    return selectedIndex;
+    NSUInteger row = selectedIndex - (numberOfElements * section);
+    NDLog(@"MBMLineChart : getCurrentSelectedOnTouch[%d] : section = %d : selectedIndex = %d : newSelectedIndex = %d",[lineLayers count],section,selectedIndex,row);
+    NSDictionary *selectedDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:section],@"SEC",[NSNumber numberWithInteger:selectedIndex],@"INDEX",[NSNumber numberWithInteger:row],@"ROW",nil];
+    return selectedDic;
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -589,8 +603,11 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 {
     UITouch *touch = [touches anyObject];
     CGPoint point = [touch locationInView:_lineView];
-    NSInteger selectedIndex = [self getCurrentSelectedOnTouch:point];
-    [self notifyDelegateOfSelectionChangeFrom:_selectedLineIndex to:selectedIndex];
+    NSDictionary *selectedDic = [self getCurrentSelectedOnTouch:point];
+    NSUInteger selectedIndex = [[selectedDic objectForKey:@"INDEX"] integerValue];
+    NSUInteger section = [[selectedDic objectForKey:@"SEC"] integerValue];
+    NSUInteger row = [[selectedDic objectForKey:@"ROW"] integerValue];
+    [self notifyDelegateOfSelectionChangeFrom:_selectedLineIndex to:selectedIndex forSection:section andRow:row];
     [self touchesCancelled:touches withEvent:event];
 }
 
@@ -607,33 +624,34 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 
 #pragma mark - Selection Notification
 
-- (void)notifyDelegateOfSelectionChangeFrom:(NSUInteger)previousSelection to:(NSUInteger)newSelection
+- (void)notifyDelegateOfSelectionChangeFrom:(NSUInteger)previousSelection to:(NSUInteger)newSelection forSection:(NSUInteger)section andRow:(NSUInteger)row
 {
+    NDLog(@"MBMLineChart : notifyDelegateOfSelectionChangeFrom : section = %d : newSelection = %d : row = %d",section,newSelection,row);
     if (previousSelection != newSelection)
     {
         if (previousSelection != -1 && [_delegate respondsToSelector:@selector(lineChart:willDeselectLineAtIndex:)])
         {
-            [_delegate lineChart:self willDeselectLineAtIndex:previousSelection];
+            [_delegate lineChart:self willDeselectLineAtIndex:previousSelection forSection:section];
         }
         
         _selectedLineIndex = newSelection;
         
         if (newSelection != -1)
         {
-            if([_delegate respondsToSelector:@selector(lineChart:willSelectLineAtIndex:)])
-                [_delegate lineChart:self willSelectLineAtIndex:newSelection];
-            if(previousSelection != -1 && [_delegate respondsToSelector:@selector(lineChart:didDeselectLineAtIndex:)])
-                [_delegate lineChart:self didDeselectLineAtIndex:previousSelection];
-            if([_delegate respondsToSelector:@selector(lineChart:didSelectLineAtIndex:)])
-                [_delegate lineChart:self didSelectLineAtIndex:newSelection];
+            if([_delegate respondsToSelector:@selector(lineChart:willSelectLineAtIndex:forSection:)])
+                [_delegate lineChart:self willSelectLineAtIndex:row forSection:section];
+            if(previousSelection != -1 && [_delegate respondsToSelector:@selector(lineChart:didDeselectLineAtIndex:forSection:)])
+                [_delegate lineChart:self didDeselectLineAtIndex:previousSelection forSection:section];
+            if([_delegate respondsToSelector:@selector(lineChart:didSelectLineAtIndex:forSection:)])
+                [_delegate lineChart:self didSelectLineAtIndex:row forSection:section];
             [self setLineSelectedAtIndex:newSelection];
         }
         
         if(previousSelection != -1)
         {
             [self setLineDeselectedAtIndex:previousSelection];
-            if([_delegate respondsToSelector:@selector(lineChart:didDeselectLineAtIndex:)])
-                [_delegate lineChart:self didDeselectLineAtIndex:previousSelection];
+            if([_delegate respondsToSelector:@selector(lineChart:didDeselectLineAtIndex:forSection:)])
+                [_delegate lineChart:self didDeselectLineAtIndex:previousSelection forSection:section];
         }
     }
     else if (newSelection != -1)
@@ -642,18 +660,18 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
         if(layer){
             
             if (layer.isSelected) {
-                if ([_delegate respondsToSelector:@selector(lineChart:willDeselectLineAtIndex:)])
-                    [_delegate lineChart:self willDeselectLineAtIndex:newSelection];
+                if ([_delegate respondsToSelector:@selector(lineChart:willDeselectLineAtIndex:forSection:)])
+                    [_delegate lineChart:self willDeselectLineAtIndex:row forSection:section];
                 [self setLineDeselectedAtIndex:newSelection];
-                if (newSelection != -1 && [_delegate respondsToSelector:@selector(lineChart:didDeselectLineAtIndex:)])
-                    [_delegate lineChart:self didDeselectLineAtIndex:newSelection];
+                if (row != -1 && [_delegate respondsToSelector:@selector(lineChart:didDeselectLineAtIndex:forSection:)])
+                    [_delegate lineChart:self didDeselectLineAtIndex:row forSection:section];
             }
             else {
-                if ([_delegate respondsToSelector:@selector(lineChart:willSelectLineAtIndex:)])
-                    [_delegate lineChart:self willSelectLineAtIndex:newSelection];
+                if ([_delegate respondsToSelector:@selector(lineChart:willSelectLineAtIndex:forSection:)])
+                    [_delegate lineChart:self willSelectLineAtIndex:row forSection:section];
                 [self setLineSelectedAtIndex:newSelection];
-                if (newSelection != -1 && [_delegate respondsToSelector:@selector(lineChart:didSelectLineAtIndex:)])
-                    [_delegate lineChart:self didSelectLineAtIndex:newSelection];
+                if (row != -1 && [_delegate respondsToSelector:@selector(lineChart:didSelectLineAtIndex:forSection:)])
+                    [_delegate lineChart:self didSelectLineAtIndex:row forSection:section];
             }
         }
     }
@@ -730,17 +748,17 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 	[self setLineDicArray:lineDicArray];
 	[self setMaxValueAxisY:0];
 	[self setMinValueAxisY:0];
-	
-	for (NSDictionary *barDic in _lineDicArray)
-	{
-		CGFloat barValue = [[barDic objectForKey:@"LineValue"] floatValue];
-		if(barValue > maxValueAxisY)
-			[self setMaxValueAxisY:barValue];
-		
-		if(barValue < minValueAxisY)
-			[self setMinValueAxisY:barValue];
-		
-	}
+    for (int section = 0; section < [self.lineDicArray count]; section++) {
+        for (NSDictionary *barDic in [_lineDicArray objectAtIndex:section])
+        {
+            CGFloat barValue = [[barDic objectForKey:@"LineValue"] floatValue];
+            if(barValue > maxValueAxisY)
+                [self setMaxValueAxisY:barValue];
+            
+            if(barValue < minValueAxisY)
+                [self setMinValueAxisY:barValue];
+        }
+    }
 	float range = maxValueAxisY - minValueAxisY;
 	float exponent = floor(log10f(range));
 	float base = pow(10, (exponent - 1));
@@ -820,7 +838,7 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 	if (addHorizontalLabels)
 	{
 		CGFloat xPos = self.leftPadding + self.labelSizeAxisY.width;
-		for (NSDictionary *barDic in _lineDicArray)
+		for (NSDictionary *barDic in [_lineDicArray objectAtIndex:0])
 		{
 			NSString *barLabel = [NSString stringWithFormat:@"%@",[barDic objectForKey:@"LineLabel"]];
 			UIColor *barLabelColor = (UIColor*)[barDic objectForKey:@"LabelColor"];
