@@ -879,11 +879,13 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 	if (plotVerticalLines)
 	{
 		CGContextSetStrokeColorWithColor(context, [[UIColor colorWithHexRGB:@"dadadb" AndAlpha:1.0] CGColor]);
-		for (NSUInteger i = 1; i <= numberOfElements; i++)
+        CGFloat xPos = self.leftPadding + self.labelSizeAxisY.width + self.barWidth/2;
+        for (NSUInteger i = 1; i <= numberOfElements; i++)
 		{
 			CGContextBeginPath(context);
-			CGContextMoveToPoint(context, CGRectGetMinX(rect) + leftPaddingAxisY + (barFullWidth/2)*(2*i - 1), CGRectGetMinY(rect));
-			CGContextAddLineToPoint(context, CGRectGetMinX(rect) + leftPaddingAxisY + (barFullWidth/2)*(2*i - 1), CGRectGetMaxY(rect));
+			CGContextMoveToPoint(context, xPos, CGRectGetMinY(rect));
+			CGContextAddLineToPoint(context, xPos, CGRectGetMaxY(rect));
+			xPos = xPos + self.barWidth + self.barInterval;
 			CGContextClosePath(context);
 			CGContextDrawPath(context, kCGPathStroke);
 		}
