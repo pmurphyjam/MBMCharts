@@ -97,8 +97,8 @@
 
 static NSUInteger kDefaultBarZOrder = 100;
 
-@synthesize dataSource = _dataSource;
-@synthesize delegate = _delegate;
+@synthesize chartDataSource = _chartDataSource;
+@synthesize chartDelegate = _chartDelegate;
 @synthesize barRect = _barRect;
 @synthesize barPoint = _barPoint;
 @synthesize animationSpeed = _animationSpeed;
@@ -161,6 +161,18 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
     self = [super initWithFrame:frame];
     if (self)
     {
+        [super setDelegate:self];
+        [self setContentSize:frame.size];
+        [super setBackgroundColor:[UIColor clearColor]];
+        [super setShowsHorizontalScrollIndicator:NO];
+        [super setShowsVerticalScrollIndicator:NO];
+		[super setScrollEnabled:YES];
+        [super setClipsToBounds:YES];
+        [super setBouncesZoom:YES];
+        [super setMinimumZoomScale:1.0];
+        [super setMaximumZoomScale:3.0];
+        [super setZoomScale:1.0];
+        
         [self setAutoresizesSubviews:YES];
         [self setClipsToBounds:YES];
         [self setClearsContextBeforeDrawing:YES];
@@ -205,6 +217,18 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
     self = [super initWithCoder:aDecoder];
     if(self)
     {
+        [super setDelegate:self];
+        [super setContentSize:self.bounds.size];
+        [super setBackgroundColor:[UIColor clearColor]];
+        [super setShowsHorizontalScrollIndicator:NO];
+        [super setShowsVerticalScrollIndicator:NO];
+		[super setScrollEnabled:YES];
+        [super setClipsToBounds:YES];
+        [super setBouncesZoom:YES];
+        [super setMinimumZoomScale:1.0];
+        [super setMaximumZoomScale:3.0];
+        [super setZoomScale:1.0];
+
         [self setAutoresizesSubviews:YES];
         [self setClipsToBounds:YES];
         [self setClearsContextBeforeDrawing:YES];
@@ -244,6 +268,36 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
         _showLabel = YES;
     }
     return self;
+}
+
+#pragma mark UIScrollViewDelegate
+
+- (void)centerScrollViewContents {
+    CGSize boundsSize = self.bounds.size;
+    CGRect contentsFrame = _barView.frame;
+    
+    if (contentsFrame.size.width < boundsSize.width) {
+        contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0f;
+    } else {
+        contentsFrame.origin.x = 0.0f;
+    }
+    
+    if (contentsFrame.size.height < boundsSize.height) {
+        contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0f;
+    } else {
+        contentsFrame.origin.y = 0.0f;
+    }
+    _barView.frame = contentsFrame;
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return _barView;
+}
+
+-(void)scrollViewDidZoom:(UIScrollView *)pageScrollView
+{
+    [self centerScrollViewContents];
 }
 
 - (void)setBarPoint:(CGPoint)barPoint
@@ -295,7 +349,7 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
 - (void)reloadData
 {
 	NDLog(@"MBMBarChart : reloadData ");
-    if (_dataSource && !_animationTimer)
+    if (_chartDataSource && !_animationTimer)
     {
         CALayer *parentLayer = [_barView layer];
         NSArray *barLayers = [parentLayer sublayers];
@@ -309,13 +363,13 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
         }];
         
         
-		NSUInteger barCount = [_dataSource numberOfBarsInChart:self];
+		NSUInteger barCount = [_chartDataSource numberOfBarsInChart:self];
 		NDLog(@"MBMBarChart : reloadData : barCount = %d",barCount);
 
 		double values[barCount];
 
 		for (int index = 0; index < barCount; index++) {
-            values[index] = [_dataSource barChart:self valueForBarAtIndex:index];
+            values[index] = [_chartDataSource barChart:self valueForBarAtIndex:index];
         }
 
         [CATransaction begin];
@@ -391,9 +445,9 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
 			layer.value = values[index];
 
 			UIColor *color = nil;
-			if([_dataSource respondsToSelector:@selector(barChart:colorForBarAtIndex:)])
+			if([_chartDataSource respondsToSelector:@selector(barChart:colorForBarAtIndex:)])
 			{
-				color = [_dataSource barChart:self colorForBarAtIndex:index];
+				color = [_chartDataSource barChart:self colorForBarAtIndex:index];
 				CAGradientLayer *gradient = [[layer sublayers] objectAtIndex:1];
 				[gradient setColors:[NSArray arrayWithObjects:(id)[color CGColor], (id)[[self getColorFrom:color add:-60] CGColor], nil]];
 				gradient = [[layer sublayers] objectAtIndex:2];
@@ -403,9 +457,9 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
                 [layer setFillColor:[[self getColorFrom:color add:-60] CGColor]];
 			}
 			
-			if([_dataSource respondsToSelector:@selector(barChart:textForBarAtIndex:)])
+			if([_chartDataSource respondsToSelector:@selector(barChart:textForBarAtIndex:)])
             {
-                //layer.text = [_dataSource barChart:self textForBarAtIndex:index];
+                //layer.text = [_chartDataSource barChart:self textForBarAtIndex:index];
 				//NDLog(@"MBMBarChart : reloadData #2: layer.text = %@",layer.text);
             }
 			
@@ -415,9 +469,9 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
 			CGRect toRect = CGRectZero;
 			CGRect toScaledRect = CGRectZero;
 
-			if([_dataSource respondsToSelector:@selector(barChart:rectForBarAtIndex:)])
+			if([_chartDataSource respondsToSelector:@selector(barChart:rectForBarAtIndex:)])
 			{
-				toRect = [_dataSource barChart:self rectForBarAtIndex:index];
+				toRect = [_chartDataSource barChart:self rectForBarAtIndex:index];
                 NDLog(@"MBMBarChart : reloadData : toRect : x = %f : y = %f : w = %f : h = %f",toRect.origin.x,toRect.origin.y,toRect.size.width,toRect.size.height);
 				fromRect = CGRectMake(toRect.origin.x, toRect.origin.y, toRect.size.width, 0);
 				toScaledRect = CGRectMake(toRect.origin.x, toRect.origin.y, toRect.size.width, toRect.size.height*scaleAxisY);
@@ -571,29 +625,29 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
 {
     if (previousSelection != newSelection)
     {
-        if (previousSelection != -1 && [_delegate respondsToSelector:@selector(barChart:willDeselectBarAtIndex:)])
+        if (previousSelection != -1 && [_chartDelegate respondsToSelector:@selector(barChart:willDeselectBarAtIndex:)])
         {
-            [_delegate barChart:self willDeselectBarAtIndex:previousSelection];
+            [_chartDelegate barChart:self willDeselectBarAtIndex:previousSelection];
         }
         
         _selectedBarIndex = newSelection;
         
         if (newSelection != -1)
         {
-            if([_delegate respondsToSelector:@selector(barChart:willSelectBarAtIndex:)])
-                [_delegate barChart:self willSelectBarAtIndex:newSelection];
-            if(previousSelection != -1 && [_delegate respondsToSelector:@selector(barChart:didDeselectBarAtIndex:)])
-                [_delegate barChart:self didDeselectBarAtIndex:previousSelection];
-            if([_delegate respondsToSelector:@selector(barChart:didSelectBarAtIndex:)])
-                [_delegate barChart:self didSelectBarAtIndex:newSelection];
+            if([_chartDelegate respondsToSelector:@selector(barChart:willSelectBarAtIndex:)])
+                [_chartDelegate barChart:self willSelectBarAtIndex:newSelection];
+            if(previousSelection != -1 && [_chartDelegate respondsToSelector:@selector(barChart:didDeselectBarAtIndex:)])
+                [_chartDelegate barChart:self didDeselectBarAtIndex:previousSelection];
+            if([_chartDelegate respondsToSelector:@selector(barChart:didSelectBarAtIndex:)])
+                [_chartDelegate barChart:self didSelectBarAtIndex:newSelection];
             [self setBarSelectedAtIndex:newSelection];
         }
         
         if(previousSelection != -1)
         {
             [self setBarDeselectedAtIndex:previousSelection];
-            if([_delegate respondsToSelector:@selector(barChart:didDeselectBarAtIndex:)])
-                [_delegate barChart:self didDeselectBarAtIndex:previousSelection];
+            if([_chartDelegate respondsToSelector:@selector(barChart:didDeselectBarAtIndex:)])
+                [_chartDelegate barChart:self didDeselectBarAtIndex:previousSelection];
         }
     }
     else if (newSelection != -1)
@@ -602,18 +656,18 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
         if(layer){
             
             if (layer.isSelected) {
-                if ([_delegate respondsToSelector:@selector(barChart:willDeselectBarAtIndex:)])
-                    [_delegate barChart:self willDeselectBarAtIndex:newSelection];
+                if ([_chartDelegate respondsToSelector:@selector(barChart:willDeselectBarAtIndex:)])
+                    [_chartDelegate barChart:self willDeselectBarAtIndex:newSelection];
                 [self setBarDeselectedAtIndex:newSelection];
-                if (newSelection != -1 && [_delegate respondsToSelector:@selector(barChart:didDeselectBarAtIndex:)])
-                    [_delegate barChart:self didDeselectBarAtIndex:newSelection];
+                if (newSelection != -1 && [_chartDelegate respondsToSelector:@selector(barChart:didDeselectBarAtIndex:)])
+                    [_chartDelegate barChart:self didDeselectBarAtIndex:newSelection];
             }
             else {
-                if ([_delegate respondsToSelector:@selector(barChart:willSelectBarAtIndex:)])
-                    [_delegate barChart:self willSelectBarAtIndex:newSelection];
+                if ([_chartDelegate respondsToSelector:@selector(barChart:willSelectBarAtIndex:)])
+                    [_chartDelegate barChart:self willSelectBarAtIndex:newSelection];
                 [self setBarSelectedAtIndex:newSelection];
-                if (newSelection != -1 && [_delegate respondsToSelector:@selector(barChart:didSelectBarAtIndex:)])
-                    [_delegate barChart:self didSelectBarAtIndex:newSelection];
+                if (newSelection != -1 && [_chartDelegate respondsToSelector:@selector(barChart:didSelectBarAtIndex:)])
+                    [_chartDelegate barChart:self didSelectBarAtIndex:newSelection];
             }
         }
     }

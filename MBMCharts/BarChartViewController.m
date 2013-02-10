@@ -47,6 +47,8 @@
 	_barChartDataArray = [[NSMutableArray alloc] init];
 	_barChartConfigArray = [[NSMutableArray alloc] init];
 
+    [_selectedBarLabel setText:@""];
+
 	//rotate up arrow
     self.downArrow.transform = CGAffineTransformMakeRotation(M_PI);
 }
@@ -77,37 +79,50 @@
 	[super viewDidDisappear:animated];
 }
 
+-(NSString*)getRandomColor
+{
+    NSInteger baseInt = arc4random() % 16777216;
+    NSString *hexColor = [NSString stringWithFormat:@"%06X", baseInt];
+	return hexColor;
+}
+
+-(NSNumber*)getRandomNum:(BOOL)type seed:(int)seed
+{
+	int seedType = 20;
+	if(type)
+		seedType = 40;
+	
+	NSNumber *randomNum = [NSNumber numberWithInt:arc4random()%seed+seedType];
+	return randomNum;
+}
+
+-(NSMutableArray*)createBarChart:(NSDictionary *)dataDic
+{
+	int seedInt = [[dataDic objectForKey:@"SEED"] intValue];;
+    int rows = [[dataDic objectForKey:@"ROWS"] intValue];
+    NDLog(@"BarChartVCtrl : createBarChart : dataDic = %@", dataDic);
+    NSArray *monthNames = [NSArray arrayWithObjects:@"Jan",@"Feb",@"Mar",@"Apr",@"May",@"Jun",@"Jul",@"Aug",@"Sep",@"Oct",@"Nov",@"Dec",nil];
+    
+    NSMutableArray *rowChartDataArray = [[[NSMutableArray alloc] init] autorelease];
+    for (int row = 0; row < rows; row++)
+    {
+        NSString *color = [self getRandomColor];
+        NSNumber *value = [self getRandomNum:NO seed:seedInt];
+        NSDictionary *chartData = [NSDictionary dictionaryWithObjectsAndKeys:[monthNames objectAtIndex:row % 12],@"Label",color,@"LabelColor",value,@"Value",color,@"Color",nil];
+        [rowChartDataArray addObject:chartData];
+    }
+    
+    NDLog(@"BarChartVCtrl : createBarChart : rowChartDataArray = %@", rowChartDataArray);
+	return rowChartDataArray;
+}
+
 - (void) setUpChart
 {
-	
 	NSDictionary *chartConfigData = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES],@"showAxisY",[NSNumber numberWithBool:YES],@"showAxisX",@"2ca095",@"ColorAxisY",@"0110ad",@"ColorAxis",[NSNumber numberWithBool:YES],@"PlotVerticalLines",[NSNumber numberWithBool:YES],@"AddHorizontalLabels",@"ff0000",@"ValueColor",@"0000ff",@"ValueShadowColor",nil];
 	[self.barChartConfigArray addObject:chartConfigData];
 	
-	NSDictionary *chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Jan",@"Label",@"3e5273",@"LabelColor",@"19",@"Value",@"3e5273",@"Color",nil];
-	[_barChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Feb",@"Label",@"2ca095",@"LabelColor",@"34",@"Value",@"2ca095",@"Color",nil];
-	[_barChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Mar",@"Label",@"566967",@"LabelColor",@"40",@"Value",@"566967",@"Color",nil];
-	[_barChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Apr",@"Label",@"016fad",@"LabelColor",@"80",@"Value",@"016fad",@"Color",nil];
-	[_barChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"May",@"Label",@"47a939",@"LabelColor",@"87",@"Value",@"47a939",@"Color",nil];
-	[_barChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Jun",@"Label",@"336981",@"LabelColor",@"100",@"Value",@"336981",@"Color",nil];
-	[_barChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Jul",@"Label",@"b8a23d",@"LabelColor",@"160",@"Value",@"b8a23d",@"Color",nil];
-	[_barChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Aug",@"Label",@"2ca095",@"LabelColor",@"267",@"Value",@"2ca095",@"Color",nil];
-	[_barChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Sep",@"Label",@"566967",@"LabelColor",@"276",@"Value",@"566967",@"Color",nil];
-	[_barChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Oct",@"Label",@"016fad",@"LabelColor",@"303",@"Value",@"016fad",@"Color",nil];
-	[_barChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Nov",@"Label",@"b8a23d",@"LabelColor",@"356",@"Value",@"b8a23d",@"Color",nil];
-	[_barChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"Dec",@"Label",@"3e5273",@"LabelColor",@"436",@"Value",@"3e5273",@"Color",nil];
-	[_barChartDataArray addObject:chartData];
-	
+    NSDictionary *dataDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:100],@"SEED",[NSNumber numberWithInt:12],@"ROWS",nil];
+    [_barChartDataArray setArray:[self createBarChart:dataDic]];
 	
 	[self.barChart setShowAxisX:[[[self.barChartConfigArray objectAtIndex:0] objectForKey:@"showAxisX"] boolValue]];
 	[self.barChart setShowAxisY:[[[self.barChartConfigArray objectAtIndex:0] objectForKey:@"showAxisY"] boolValue]];
@@ -134,8 +149,8 @@
 		NSValue *rectValue = [NSValue valueWithCGRect:CGRectMake(xPos, yPos, barWidth, barHeight)];
 		NSString *label = [barInfo objectForKey:@"Label"];
 		xPos = xPos + self.barChart.barWidth + self.barChart.barInterval;
-		[self.barChart setDelegate:self];
-		[self.barChart setDataSource:self];
+		[self.barChart setChartDelegate:self];
+		[self.barChart setChartDataSource:self];
 		[self.barChart setNumberOfBars:[self.barChartDataArray count]];
 		[self.barChart setAnimationSpeed:1.0];
 		[self.barChart setUserInteractionEnabled:YES];
@@ -159,6 +174,7 @@
 }
 
 - (IBAction)clearBars {
+    [_selectedBarLabel setText:@""];
 	for(int index = 0; index < _barDicArray.count; index ++)
 	{
 		NSMutableDictionary *barDic = [[_barDicArray objectAtIndex:index] mutableCopy];
@@ -178,9 +194,8 @@
 	if (num > 0) {
         for (int n=0; n < abs(num); n++)
 		{
-			NSNumber *barHeightNum = [NSNumber numberWithInt:arc4random()%300+20];
-			NSInteger baseInt = arc4random() % 16777216;
-			NSString *hexColor = [NSString stringWithFormat:@"%06X", baseInt];
+            NSNumber *barHeightNum = [self getRandomNum:NO seed:100];
+            NSString *hexColor = [self getRandomColor];
 			
 			NSInteger index = self.barChartDataArray.count;
             if(self.barChartDataArray.count > 0)
@@ -245,8 +260,8 @@
 		NSValue *rectValue = [NSValue valueWithCGRect:CGRectMake(xPos, yPos, barWidth, barHeight)];
 		NSString *label = [barInfo objectForKey:@"Label"];
 		xPos = xPos + self.barChart.barWidth + self.barChart.barInterval;
-		[self.barChart setDelegate:self];
-		[self.barChart setDataSource:self];
+		[self.barChart setChartDelegate:self];
+		[self.barChart setChartDataSource:self];
 		[self.barChart setNumberOfBars:[self.barChartDataArray count]];
 		[self.barChart setAnimationSpeed:1.0];
 		[self.barChart setUserInteractionEnabled:YES];
@@ -261,6 +276,7 @@
 
 - (IBAction)updateBars
 {
+    [_selectedBarLabel setText:@""];
 	for(int index = 0; index < _barDicArray.count; index ++)
 	{
 		NSMutableDictionary *barDic = [[_barDicArray objectAtIndex:index] mutableCopy];

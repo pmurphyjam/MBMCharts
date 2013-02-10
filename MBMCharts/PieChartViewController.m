@@ -50,7 +50,45 @@
 	_pieChartDataArray = [[NSMutableArray alloc] init];
 	_pieChartConfigArray = [[NSMutableArray alloc] init];
 
+    [_selectedSliceLabel setText:@""];
+
 	[self setUpChart];
+}
+
+-(NSString*)getRandomColor
+{
+    NSInteger baseInt = arc4random() % 16777216;
+    NSString *hexColor = [NSString stringWithFormat:@"%06X", baseInt];
+	return hexColor;
+}
+
+-(NSNumber*)getRandomNum:(BOOL)type seed:(int)seed
+{
+	int seedType = 20;
+	if(type)
+		seedType = 40;
+	
+	NSNumber *randomNum = [NSNumber numberWithInt:arc4random()%seed+seedType];
+	return randomNum;
+}
+
+-(NSMutableArray*)createPieChart:(NSDictionary *)dataDic
+{
+	int seedInt = [[dataDic objectForKey:@"SEED"] intValue];;
+    int slices = [[dataDic objectForKey:@"SLICES"] intValue];
+    NDLog(@"PieChartVCtrl : createPieChart : dataDic = %@", dataDic);
+    
+    NSMutableArray *sliceChartDataArray = [[[NSMutableArray alloc] init] autorelease];
+    for (int row = 0; row < slices; row++)
+    {
+        NSString *color = [self getRandomColor];
+        NSNumber *value = [self getRandomNum:NO seed:seedInt];
+        NSDictionary *chartData = [NSDictionary dictionaryWithObjectsAndKeys:value,@"Value",color,@"Color",nil];
+        [sliceChartDataArray addObject:chartData];
+    }
+    
+    NDLog(@"PieChartVCtrl : createPieChart : sliceChartDataArray = %@", sliceChartDataArray);
+	return sliceChartDataArray;
 }
 
 - (void) setUpChart
@@ -58,32 +96,10 @@
 	NSDictionary *chartConfigData = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES],@"ShowPercentage",@"ff0000",@"LabelColor",@"0000ff",@"ValueShadowColor",nil];
 	[_pieChartConfigArray addObject:chartConfigData];
 	
-	NSDictionary *chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"40",@"Value",@"3e5273",@"Color",nil];
-	[_pieChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"68",@"Value",@"f69b00",@"Color",nil];
-	[_pieChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"70",@"Value",@"7ec31d",@"Color",nil];
-	[_pieChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"80",@"Value",@"016fad",@"Color",nil];
-	[_pieChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"90",@"Value",@"47a939",@"Color",nil];
-	[_pieChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"100",@"Value",@"336981",@"Color",nil];
-	[_pieChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"160",@"Value",@"7654f0",@"Color",nil];
-	[_pieChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"150",@"Value",@"2ca095",@"Color",nil];
-	[_pieChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"176",@"Value",@"566967",@"Color",nil];
-	[_pieChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"239",@"Value",@"98f543",@"Color",nil];
-	[_pieChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"210",@"Value",@"b8a23d",@"Color",nil];
-	[_pieChartDataArray addObject:chartData];
-	chartData = [NSDictionary dictionaryWithObjectsAndKeys:@"180",@"Value",@"675432",@"Color",nil];
-	[_pieChartDataArray addObject:chartData];
-	
-	for (NSDictionary *pieInfo in self.pieChartDataArray)
+    NSDictionary *dataDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:100],@"SEED",[NSNumber numberWithInt:12],@"SLICES",nil];
+    [_pieChartDataArray setArray:[self createPieChart:dataDic]];
+
+    for (NSDictionary *pieInfo in self.pieChartDataArray)
 	{
 		NSNumber *pieValue = [NSNumber numberWithFloat:[[pieInfo objectForKey:@"Value"] floatValue]];
 		UIColor *pieColor = [UIColor colorWithHexRGB:[pieInfo objectForKey:@"Color"] AndAlpha:1.0];
@@ -91,8 +107,8 @@
 		[_pieDicArray addObject:pieDic];
 	}
 	
-	[self.pieChartLeft setDelegate:self];
-    [self.pieChartLeft setDataSource:self];
+	[self.pieChartLeft setChartDelegate:self];
+    [self.pieChartLeft setChartDataSource:self];
     [self.pieChartLeft setStartPieAngle:M_PI_2];
 	[self.pieChartLeft setAnimationSpeed:1.0];
 	[self.pieChartLeft setShowPercentage:[[[self.pieChartConfigArray objectAtIndex:0] objectForKey:@"ShowPercentage"] boolValue]];
@@ -114,8 +130,8 @@
 		[self.pieChartLeft setLabelFont:[UIFont fontWithName:@"DBLCDTempBlack" size:12]];
 	}
 	
-    [self.pieChartRight setDelegate:self];
-    [self.pieChartRight setDataSource:self];
+    [self.pieChartRight setChartDelegate:self];
+    [self.pieChartRight setChartDataSource:self];
 	[self.pieChartRight setStartPieAngle:M_PI_2];
     [self.pieChartRight setAnimationSpeed:1.0];
 	[self.pieChartRight setShowPercentage:NO];
@@ -187,6 +203,7 @@
 
 - (IBAction)clearSlices {
 	[_pieDicArray removeAllObjects];
+    [_selectedSliceLabel setText:@""];
     [self.pieChartLeft reloadData];
     [self.pieChartRight reloadData];
 }
@@ -197,10 +214,10 @@
     if (num > 0) {
         for (int n=0; n < abs(num); n++)
         {
-            NSNumber *pieValue = [NSNumber numberWithInt:arc4random()%100+20];
-			NSInteger baseInt = arc4random() % 16777216;
-			NSString *pieColor = [NSString stringWithFormat:@"%06X", baseInt];
-			NSDictionary *pieDic = [NSDictionary dictionaryWithObjectsAndKeys:pieValue,@"Value",pieColor,@"Color",nil];
+            NSNumber *pieValue = [self getRandomNum:NO seed:100];
+            NSString *hexColor = [self getRandomColor];
+            
+			NSDictionary *pieDic = [NSDictionary dictionaryWithObjectsAndKeys:pieValue,@"Value",hexColor,@"Color",nil];
             NSInteger index = 0;
             if(self.pieChartDataArray.count > 0) 
             {

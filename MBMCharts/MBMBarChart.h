@@ -27,9 +27,9 @@
 - (void)barChart:(MBMBarChart *)barChart didDeselectBarAtIndex:(NSUInteger)index;
 @end
 
-@interface MBMBarChart : UIView
-@property(nonatomic, assign) id<MBMBarChartDataSource> dataSource;
-@property(nonatomic, assign) id<MBMBarChartDelegate> delegate;
+@interface MBMBarChart : UIScrollView <UIScrollViewDelegate>
+@property(nonatomic, assign) id<MBMBarChartDataSource> chartDataSource;
+@property(nonatomic, assign) id<MBMBarChartDelegate> chartDelegate;
 @property(nonatomic, assign) CGRect barRect;
 @property(nonatomic, assign) CGFloat animationSpeed;
 @property(nonatomic, assign) CGPoint barPoint;

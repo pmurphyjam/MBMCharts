@@ -60,6 +60,7 @@
 
     [_segmentsLabel setText:@"Seg(s) = 12"];
     [_linesLabel setText:@"Line(s) = 2"];
+    [_selectedLineLabel setText:@""];
 
     //rotate up arrow
     self.downArrow.transform = CGAffineTransformMakeRotation(M_PI);
@@ -181,8 +182,8 @@
             NSValue *pointValue = [NSValue valueWithCGPoint:CGPointMake(xPos, barHeight)];
             NSString *label = [lineInfo objectForKey:@"Label"];
             xPos = xPos + self.lineChart.barWidth + self.lineChart.barInterval;
-            [self.lineChart setDelegate:self];
-            [self.lineChart setDataSource:self];
+            [self.lineChart setChartDelegate:self];
+            [self.lineChart setChartDataSource:self];
             [self.lineChart setNumberOfLines:[[self.lineChartDataArray objectAtIndex:0] count]];
             [self.lineChart setAnimationSpeed:1.0];
             [self.lineChart setUserInteractionEnabled:YES];
@@ -226,6 +227,7 @@
 
 - (IBAction)clearLines:(id)sender
 {
+    [_selectedLineLabel setText:@""];
     for (int section = 0; section < [_lineDicArray count]; section++)
     {
         for(int index = 0; index < [[_lineDicArray objectAtIndex:section] count]; index ++)
@@ -383,8 +385,8 @@
             NSValue *pointValue = [NSValue valueWithCGPoint:CGPointMake(xPos, barHeight)];
             NSString *label = [lineInfo objectForKey:@"Label"];
             xPos = xPos + self.lineChart.barWidth + self.lineChart.barInterval;
-            [self.lineChart setDelegate:self];
-            [self.lineChart setDataSource:self];
+            [self.lineChart setChartDelegate:self];
+            [self.lineChart setChartDataSource:self];
             [self.lineChart setNumberOfLines:[[self.lineChartDataArray objectAtIndex:0] count]];
             [self.lineChart setAnimationSpeed:1.0];
             [self.lineChart setUserInteractionEnabled:YES];
@@ -405,6 +407,7 @@
 
 - (IBAction)updateLines:(id)sender
 {
+    [_selectedLineLabel setText:@""];
 	for (int section = 0; section < [_lineDicArray count]; section++)
     {
         for(int index = 0; index < [[_lineDicArray objectAtIndex:section] count]; index ++)

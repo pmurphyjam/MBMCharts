@@ -27,8 +27,8 @@
 @end
 
 @interface MBMPieChart : UIView
-@property(nonatomic, assign) id<MBMPieChartDataSource> dataSource;
-@property(nonatomic, assign) id<MBMPieChartDelegate> delegate;
+@property(nonatomic, assign) id<MBMPieChartDataSource> chartDataSource;
+@property(nonatomic, assign) id<MBMPieChartDelegate> chartDelegate;
 @property(nonatomic, assign) CGFloat startPieAngle;
 @property(nonatomic, assign) CGFloat animationSpeed;
 @property(nonatomic, assign) CGPoint pieCenter;

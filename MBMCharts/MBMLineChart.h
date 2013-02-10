@@ -29,9 +29,9 @@
 - (void)lineChart:(MBMLineChart *)lineChart didDeselectLineAtIndex:(NSUInteger)index forSection:(NSUInteger)section;
 @end
 
-@interface MBMLineChart : UIView
-@property (nonatomic, assign) id<MBMLineChartDataSource> dataSource;
-@property (nonatomic, assign) id<MBMLineChartDelegate> delegate;
+@interface MBMLineChart : UIScrollView <UIScrollViewDelegate>
+@property (nonatomic, assign) id<MBMLineChartDataSource> chartDataSource;
+@property (nonatomic, assign) id<MBMLineChartDelegate> chartDelegate;
 @property (nonatomic, assign) CGPoint linePoint;
 @property (nonatomic, assign) CGFloat animationSpeed;
 @property (nonatomic, assign) CGFloat lineHeight;

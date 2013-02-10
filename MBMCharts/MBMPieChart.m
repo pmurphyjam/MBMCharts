@@ -92,8 +92,8 @@
 
 static NSUInteger kDefaultSliceZOrder = 100;
 
-@synthesize dataSource = _dataSource;
-@synthesize delegate = _delegate;
+@synthesize chartDataSource = _chartDataSource;
+@synthesize chartDelegate = _chartDelegate;
 @synthesize startPieAngle = _startPieAngle;
 @synthesize animationSpeed = _animationSpeed;
 @synthesize pieCenter = _pieCenter;
@@ -260,7 +260,7 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
 
 - (void)reloadData
 {
-    if (_dataSource && !_animationTimer) 
+    if (_chartDataSource && !_animationTimer) 
     {
         CALayer *parentLayer = [_pieView layer];
         NSArray *slicelayers = [parentLayer sublayers];
@@ -276,12 +276,12 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
         double startToAngle = 0.0;
         double endToAngle = startToAngle;
         
-        NSUInteger sliceCount = [_dataSource numberOfSlicesInPieChart:self];
+        NSUInteger sliceCount = [_chartDataSource numberOfSlicesInPieChart:self];
         
         double sum = 0.0;
         double values[sliceCount];
         for (int index = 0; index < sliceCount; index++) {
-            values[index] = [_dataSource pieChart:self valueForSliceAtIndex:index];
+            values[index] = [_chartDataSource pieChart:self valueForSliceAtIndex:index];
             sum += values[index];
         }
         
@@ -390,15 +390,15 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
             layer.value = values[index];
             layer.percentage = (sum)?layer.value/sum:0;
             UIColor *color = nil;
-            if([_dataSource respondsToSelector:@selector(pieChart:colorForSliceAtIndex:)])
+            if([_chartDataSource respondsToSelector:@selector(pieChart:colorForSliceAtIndex:)])
             {
-                color = [_dataSource pieChart:self colorForSliceAtIndex:index];
+                color = [_chartDataSource pieChart:self colorForSliceAtIndex:index];
 				[layer setFillColor:color.CGColor];
             }
             
-            if([_dataSource respondsToSelector:@selector(pieChart:textForSliceAtIndex:)])
+            if([_chartDataSource respondsToSelector:@selector(pieChart:textForSliceAtIndex:)])
             {
-                layer.text = [_dataSource pieChart:self textForSliceAtIndex:index];
+                layer.text = [_chartDataSource pieChart:self textForSliceAtIndex:index];
             }
             
             [self updateLabelForLayer:layer value:values[index]];
@@ -539,29 +539,29 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
 {
     if (previousSelection != newSelection) 
     {
-        if (previousSelection != -1 && [_delegate respondsToSelector:@selector(pieChart:willDeselectSliceAtIndex:)])
+        if (previousSelection != -1 && [_chartDelegate respondsToSelector:@selector(pieChart:willDeselectSliceAtIndex:)])
         {
-            [_delegate pieChart:self willDeselectSliceAtIndex:previousSelection];
+            [_chartDelegate pieChart:self willDeselectSliceAtIndex:previousSelection];
         }
         
         _selectedSliceIndex = newSelection;
         
         if (newSelection != -1) 
         {
-            if([_delegate respondsToSelector:@selector(pieChart:willSelectSliceAtIndex:)])
-                [_delegate pieChart:self willSelectSliceAtIndex:newSelection];
-            if(previousSelection != -1 && [_delegate respondsToSelector:@selector(pieChart:didDeselectSliceAtIndex:)])
-                [_delegate pieChart:self didDeselectSliceAtIndex:previousSelection];
-            if([_delegate respondsToSelector:@selector(pieChart:didSelectSliceAtIndex:)])
-                [_delegate pieChart:self didSelectSliceAtIndex:newSelection];
+            if([_chartDelegate respondsToSelector:@selector(pieChart:willSelectSliceAtIndex:)])
+                [_chartDelegate pieChart:self willSelectSliceAtIndex:newSelection];
+            if(previousSelection != -1 && [_chartDelegate respondsToSelector:@selector(pieChart:didDeselectSliceAtIndex:)])
+                [_chartDelegate pieChart:self didDeselectSliceAtIndex:previousSelection];
+            if([_chartDelegate respondsToSelector:@selector(pieChart:didSelectSliceAtIndex:)])
+                [_chartDelegate pieChart:self didSelectSliceAtIndex:newSelection];
             [self setSliceSelectedAtIndex:newSelection];
         }
         
         if(previousSelection != -1)
         {
             [self setSliceDeselectedAtIndex:previousSelection];
-            if([_delegate respondsToSelector:@selector(pieChart:didDeselectSliceAtIndex:)])
-                [_delegate pieChart:self didDeselectSliceAtIndex:previousSelection];
+            if([_chartDelegate respondsToSelector:@selector(pieChart:didDeselectSliceAtIndex:)])
+                [_chartDelegate pieChart:self didDeselectSliceAtIndex:previousSelection];
         }
     }
     else if (newSelection != -1)
@@ -570,18 +570,18 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
         if(_selectedSliceOffsetRadius > 0 && layer){
 
             if (layer.isSelected) {
-                if ([_delegate respondsToSelector:@selector(pieChart:willDeselectSliceAtIndex:)])
-                    [_delegate pieChart:self willDeselectSliceAtIndex:newSelection];
+                if ([_chartDelegate respondsToSelector:@selector(pieChart:willDeselectSliceAtIndex:)])
+                    [_chartDelegate pieChart:self willDeselectSliceAtIndex:newSelection];
                 [self setSliceDeselectedAtIndex:newSelection];
-                if (newSelection != -1 && [_delegate respondsToSelector:@selector(pieChart:didDeselectSliceAtIndex:)])
-                    [_delegate pieChart:self didDeselectSliceAtIndex:newSelection];
+                if (newSelection != -1 && [_chartDelegate respondsToSelector:@selector(pieChart:didDeselectSliceAtIndex:)])
+                    [_chartDelegate pieChart:self didDeselectSliceAtIndex:newSelection];
             }
             else {
-                if ([_delegate respondsToSelector:@selector(pieChart:willSelectSliceAtIndex:)])
-                    [_delegate pieChart:self willSelectSliceAtIndex:newSelection];
+                if ([_chartDelegate respondsToSelector:@selector(pieChart:willSelectSliceAtIndex:)])
+                    [_chartDelegate pieChart:self willSelectSliceAtIndex:newSelection];
                 [self setSliceSelectedAtIndex:newSelection];
-                if (newSelection != -1 && [_delegate respondsToSelector:@selector(pieChart:didSelectSliceAtIndex:)])
-                    [_delegate pieChart:self didSelectSliceAtIndex:newSelection];
+                if (newSelection != -1 && [_chartDelegate respondsToSelector:@selector(pieChart:didSelectSliceAtIndex:)])
+                    [_chartDelegate pieChart:self didSelectSliceAtIndex:newSelection];
             }
         }
     }
