@@ -17,6 +17,7 @@
 @property (nonatomic, assign) CGFloat value;
 @property (nonatomic, assign) CGPoint point;
 @property (nonatomic, assign) BOOL isSelected;
+@property (nonatomic, assign) BOOL touched;
 @property (nonatomic, assign) NSUInteger section;
 @property (nonatomic, assign) NSUInteger index;
 @property (nonatomic, retain) NSString *text;
@@ -29,12 +30,13 @@
 @synthesize value = _value;
 @synthesize point = _point;
 @synthesize isSelected = _isSelected;
+@synthesize touched = _touched;
 @synthesize section = _section;
 @synthesize index = _index;
 
 - (NSString*)description
 {
-    return [NSString stringWithFormat:@"LineLayer : [%d,%d] : value = %f : Point : X = %f Y = %f ",_section,_index, _value, _point.x, _point.y];
+    return [NSString stringWithFormat:@"LineLayer : [%d,%d] : value = %f : Point : X = %f Y = %f : Touched = %@",_section,_index, _value, _point.x, _point.y,_touched?@"YES":@"NO"];
 }
 
 + (BOOL)needsDisplayForKey:(NSString *)key
@@ -624,19 +626,26 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 		CGRect pathRect = CGPathGetPathBoundingBox(path);
 		//Improve touch detection by determining if point is within path's rectangle
 		//otherwise iPhone will not detect touch events very well
+        //Additionaly set the touched BOOL if a line has been touched so the
+        //next touch event will go to the next line
 		BOOL withInRect = CGRectContainsPoint(pathRect,point);
-        if (CGPathContainsPoint(path, &transform, point, 0) || withInRect) {
+        BOOL lineTouched = [lineLayer touched];
+        if (!lineTouched && (CGPathContainsPoint(path, &transform, point, 0) || withInRect))
+        {
             [lineLayer setLineWidth:_selectedLineStroke];
             [lineLayer setLineJoin:kCALineJoinRound];
             [lineLayer setZPosition:MAXFLOAT];
+            [lineLayer setTouched:YES];
             selectedIndex = idx;
             section = lineLayer.section;
+            *stop = YES;
         } else {
             [lineLayer setZPosition:kDefaultLineZOrder];
+            [lineLayer setTouched:NO];
         }
     }];
     NSUInteger row = selectedIndex - (numberOfElements * section);
-    NDLog(@"MBMLineChart : getCurrentSelectedOnTouch[%d] : section = %d : selectedIndex = %d : newSelectedIndex = %d",[lineLayers count],section,selectedIndex,row);
+    NDLog(@"MBMLineChart : getCurrentSelectedOnTouch[%d,%d] : newSelectedIndex = %d",section,selectedIndex,row);
     NSDictionary *selectedDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:section],@"SEC",[NSNumber numberWithInteger:selectedIndex],@"INDEX",[NSNumber numberWithInteger:row],@"ROW",nil];
     return selectedDic;
 }
@@ -644,13 +653,6 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self touchesMoved:touches withEvent:event];
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint point = [touch locationInView:_lineView];
-    [self getCurrentSelectedOnTouch:point];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
