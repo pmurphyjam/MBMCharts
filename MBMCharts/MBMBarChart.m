@@ -400,7 +400,7 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
 
 		for(int index = 0; index < barCount; index ++)
 		{
-			BarLayer *layer;
+			BarLayer *layer = nil;
 			
 			if( index >= [barLayers count] )
             {

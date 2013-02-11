@@ -341,7 +341,7 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
         
         for(int index = 0; index < sliceCount; index ++)
         {
-            SliceLayer *layer;
+            SliceLayer *layer = nil;
             double angle = angles[index];
             endToAngle += angle;
             double startFromAngle = _startPieAngle + startToAngle;

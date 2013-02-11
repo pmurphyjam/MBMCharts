@@ -456,7 +456,7 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
             
             for(int index = 0; index < lineCount; index ++)
             {
-                LineLayer *layer;
+                LineLayer *layer = nil;
                 CGFloat value = [_chartDataSource lineChart:self valueForLineAtIndex:index forSection:section];
 
                 if( indexN >= [lineLayers count] )
