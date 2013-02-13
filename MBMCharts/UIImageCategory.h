@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface UIImage (Category)
+@interface UIImage (ImageCategory)
 
 +(UIImage*) imageWithName:(NSString *)imageName;
 +(UIImage*) imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;

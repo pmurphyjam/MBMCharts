@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface UIColor (Category)
+@interface UIColor (ColorCategory)
 
 +(UIColor*)colorWithHexRGB:(NSString*)hexRGB AndAlpha:(float)alpha;
 
