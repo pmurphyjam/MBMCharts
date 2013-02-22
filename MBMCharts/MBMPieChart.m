@@ -316,7 +316,7 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
             
             [_pieView setUserInteractionEnabled:YES];
         }];
-        
+        [layersToRemove release];
         BOOL isOnStart = ([slicelayers count] == 0 && sliceCount);
         NSInteger diff = sliceCount - [slicelayers count];
         layersToRemove = [NSMutableArray arrayWithArray:slicelayers];
@@ -652,6 +652,8 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
 	[_labelFont release];
 	[_labelColor release];
 	[_labelShadowColor release];
+	[_pieView release];
+	[_animations release];
 	[super dealloc];
 }
 

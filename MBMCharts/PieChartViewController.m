@@ -13,8 +13,8 @@
 
 @implementation PieChartViewController
 
-@synthesize pieChartRight = _pieChart;
-@synthesize pieChartLeft = _pieChartCopy;
+@synthesize pieChartRight = _pieChartRight;
+@synthesize pieChartLeft = _pieChartLeft;
 @synthesize percentageLabel = _percentageLabel;
 @synthesize selectedSliceLabel = _selectedSliceLabel;
 @synthesize numOfSlices = _numOfSlices;
@@ -81,10 +81,12 @@
     NSMutableArray *sliceChartDataArray = [[[NSMutableArray alloc] init] autorelease];
     for (int row = 0; row < slices; row++)
     {
-        NSString *color = [self getRandomColor];
-        NSNumber *value = [self getRandomNum:NO seed:seedInt];
+        NSString *color = [[self getRandomColor] retain];
+        NSNumber *value = [[self getRandomNum:NO seed:seedInt] retain];
         NSDictionary *chartData = [NSDictionary dictionaryWithObjectsAndKeys:value,@"Value",color,@"Color",nil];
-        [sliceChartDataArray addObject:chartData];
+		[sliceChartDataArray addObject:chartData];
+		[color release];
+		[value release];
     }
     
     NDLog(@"PieChartVCtrl : createPieChart : sliceChartDataArray = %@", sliceChartDataArray);
@@ -315,8 +317,11 @@
 }
 
 - (void)dealloc {
-	[_pieChart release];
-	[_pieChartCopy release];
+	[_pieChartRight release];
+	[_pieChartLeft release];
+	[_pieDicArray release];
+	[_pieChartDataArray release];
+	[_pieChartConfigArray release];
 	[_percentageLabel release];
 	[_selectedSliceLabel release];
 	[_numOfSlices release];

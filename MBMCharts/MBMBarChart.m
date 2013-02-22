@@ -393,7 +393,7 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
             
             [_barView setUserInteractionEnabled:YES];
         }];
-        
+        [layersToRemove release];
         layersToRemove = [NSMutableArray arrayWithArray:barLayers];
 
         NSInteger diff = barCount - [barLayers count];
@@ -870,6 +870,8 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
 	[_valueColor release];
 	[_valueShadowColor release];
     [_barDicArray release];
+	[_barView release];
+	[_animations release];
 	[colorAxisY release];
 	[colorAxis release];
 	[super dealloc];

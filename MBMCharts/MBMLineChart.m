@@ -917,6 +917,8 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 	[_labelColor release];
 	[_labelShadowColor release];
     [_lineDicArray release];
+	[_lineView release];
+	[_animations release];
 	[colorAxisY release];
 	[colorAxis release];
 	[super dealloc];
