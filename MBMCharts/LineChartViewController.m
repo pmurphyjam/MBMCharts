@@ -111,10 +111,12 @@
         NSMutableArray *rowChartDataArray = [[NSMutableArray alloc] init];
         for (int row = 0; row < rows; row++)
         {
-            NSString *color = [self getRandomColor];
-            NSNumber *value = [self getRandomNum:NO seed:seedInt];
+            NSString *color = [[self getRandomColor] retain];
+            NSNumber *value = [[self getRandomNum:NO seed:seedInt] retain];
             NSDictionary *chartData = [NSDictionary dictionaryWithObjectsAndKeys:[monthNames objectAtIndex:row % 12],@"Label",color,@"LabelColor",value,@"Value",color,@"Color",nil];
             [rowChartDataArray addObject:chartData];
+			[color release];
+			[value release];
         }
         [secChartDataArray addObject:rowChartDataArray];
         [rowChartDataArray release];
