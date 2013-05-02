@@ -1,10 +1,10 @@
 MBMCharts
 =========
 
-Mobitor Business Model Charts for iPhone / iPad Objective-C
+Mobitor Business Model Charts for iPhone / iPad objective-c
 
 Mobitor Business Models for Charts
-Includes : Bar Chart, Line Chart & Pie Chart
+Includes : bar chart barchart, line chart linechart & pie chart piechart
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
