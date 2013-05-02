@@ -2,7 +2,6 @@
 //  UIImageCategory.m
 //  MBMClient
 //
-//  Created by Anantha Srinivas Malyala on 12/21/11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
