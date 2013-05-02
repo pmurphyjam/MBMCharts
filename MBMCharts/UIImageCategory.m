@@ -1,8 +1,8 @@
 //
 //  UIImageCategory.m
-//  MBMClient
-//
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
+//  
+//  Created by Pat Murphy on 12/13/12.
+//  Copyright (c) 2012 Pat Murphy. All rights reserved.
 //
 
 #import "UIImageCategory.h"
