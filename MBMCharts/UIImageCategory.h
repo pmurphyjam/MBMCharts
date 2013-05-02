@@ -2,7 +2,6 @@
 //  UIImageCategory.h
 //  MBMClient
 //
-//  Created by Anantha Srinivas Malyala on 12/21/11.
 //  Copyright (c) 2011 Mobitor. All rights reserved.
 //
 
