@@ -1,7 +1,7 @@
 MBMCharts
 =========
 
-Mobitor Business Model Charts for iPhone / iPad objective-c
+Business Model Charts for iPhone / iPad objective-c
 
 Includes : Bar Chart, Line Chart Line Chart & Pie Chart
 
@@ -25,14 +25,6 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
-
-Copyright (c) 2013 Mobitor Corporation;
-www.mobitor.com
-
-If your a programmer, go to our website : www.mobitor.com
-We are always looking for good programmers in iOS, Xcode, C#, Visual Studio,
-.NET, HTML5, jQuery and other JavaScript-based frameworks, SQL Server 2008 / 2012
-and of course Git for source control.
 
 If you find any bugs, you can contact:
 Pat Murphy
