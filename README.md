@@ -26,11 +26,7 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
-If you find any bugs, you can contact:
-Pat Murphy
-pmurphyjam@me.com
-
-MBMCharts is a simple and easy-to-use charting library for iOS apps. 
+MBMCharts is a simple and easy-to-use charting library for iOS apps, and uses ARC memory management. 
 It includes path animations for redrawing and animating the charts using a CAShapeLayer.
 All charts have pretty much the same architecture:
 1) CAShapeLayer
