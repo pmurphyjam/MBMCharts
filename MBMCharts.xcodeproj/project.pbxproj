@@ -378,6 +378,7 @@
 		1A84C70616965191000DCF3D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MBMCharts/MBMCharts-Prefix.pch";
 				INFOPLIST_FILE = "MBMCharts/MBMCharts-Info.plist";
@@ -389,6 +390,7 @@
 		1A84C70716965191000DCF3D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MBMCharts/MBMCharts-Prefix.pch";
 				INFOPLIST_FILE = "MBMCharts/MBMCharts-Info.plist";

@@ -11,16 +11,16 @@
 
 @interface PieChartViewController : UIViewController <MBMPieChartDelegate, MBMPieChartDataSource>
 
-@property(nonatomic, retain) IBOutlet MBMPieChart *pieChartRight;
-@property(nonatomic, retain) IBOutlet MBMPieChart *pieChartLeft;
-@property(nonatomic, retain) IBOutlet UILabel *percentageLabel;
-@property(nonatomic, retain) IBOutlet UILabel *selectedSliceLabel;
-@property(nonatomic, retain) IBOutlet UITextField *numOfSlices;
-@property(nonatomic, retain) IBOutlet UISegmentedControl *indexOfSlices;
-@property(nonatomic, retain) IBOutlet UIButton *downArrow;
-@property(nonatomic, retain) NSMutableArray *pieDicArray;
-@property(nonatomic, retain) NSMutableArray *pieChartDataArray;
-@property(nonatomic, retain) NSMutableArray *pieChartConfigArray;
+@property(nonatomic, strong) IBOutlet MBMPieChart *pieChartRight;
+@property(nonatomic, strong) IBOutlet MBMPieChart *pieChartLeft;
+@property(nonatomic, strong) IBOutlet UILabel *percentageLabel;
+@property(nonatomic, strong) IBOutlet UILabel *selectedSliceLabel;
+@property(nonatomic, strong) IBOutlet UITextField *numOfSlices;
+@property(nonatomic, strong) IBOutlet UISegmentedControl *indexOfSlices;
+@property(nonatomic, strong) IBOutlet UIButton *downArrow;
+@property(nonatomic, strong) NSMutableArray *pieDicArray;
+@property(nonatomic, strong) NSMutableArray *pieChartDataArray;
+@property(nonatomic, strong) NSMutableArray *pieChartConfigArray;
 
 - (void) setUpChart;
 

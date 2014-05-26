@@ -100,7 +100,7 @@
     int addSecs = [[dataDic objectForKey:@"ADD_SECS"] intValue];
     NDLog(@"LineChartVCtrl : addSectionToLineChart : dataDic = %@", dataDic);
     NSArray *monthNames = [NSArray arrayWithObjects:@"Jan",@"Feb",@"Mar",@"Apr",@"May",@"Jun",@"Jul",@"Aug",@"Sep",@"Oct",@"Nov",@"Dec",nil];
-    NSMutableArray *secChartDataArray = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *secChartDataArray = [[NSMutableArray alloc] init];
     for(NSArray *lineArray in lineChart)
     {
         [secChartDataArray addObject:lineArray];
@@ -111,15 +111,12 @@
         NSMutableArray *rowChartDataArray = [[NSMutableArray alloc] init];
         for (int row = 0; row < rows; row++)
         {
-            NSString *color = [[self getRandomColor] retain];
-            NSNumber *value = [[self getRandomNum:NO seed:seedInt] retain];
+            NSString *color = [self getRandomColor];
+            NSNumber *value = [self getRandomNum:NO seed:seedInt];
             NSDictionary *chartData = [NSDictionary dictionaryWithObjectsAndKeys:[monthNames objectAtIndex:row % 12],@"Label",color,@"LabelColor",value,@"Value",color,@"Color",nil];
             [rowChartDataArray addObject:chartData];
-			[color release];
-			[value release];
         }
         [secChartDataArray addObject:rowChartDataArray];
-        [rowChartDataArray release];
     }
     NDLog(@"LineChartVCtrl : addSectionToLineChart : secChartDataArray = %@", secChartDataArray);
 	return secChartDataArray;
@@ -132,22 +129,19 @@
     int secs = [[dataDic objectForKey:@"SECS"] intValue];
     NDLog(@"LineChartVCtrl : createLineChart : dataDic = %@", dataDic);
     NSArray *monthNames = [NSArray arrayWithObjects:@"Jan",@"Feb",@"Mar",@"Apr",@"May",@"Jun",@"Jul",@"Aug",@"Sep",@"Oct",@"Nov",@"Dec",nil];    
-    NSMutableArray *secChartDataArray = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *secChartDataArray = [[NSMutableArray alloc] init];
 
     for (int sec = 0; sec < secs; sec++)
     {
         NSMutableArray *rowChartDataArray = [[NSMutableArray alloc] init];
         for (int row = 0; row < rows; row++)
         {
-            NSString *color = [[self getRandomColor] retain];
-            NSNumber *value = [[self getRandomNum:NO seed:seedInt] retain];
+            NSString *color = [self getRandomColor];
+            NSNumber *value = [self getRandomNum:NO seed:seedInt];
             NSDictionary *chartData = [NSDictionary dictionaryWithObjectsAndKeys:[monthNames objectAtIndex:row % 12],@"Label",color,@"LabelColor",value,@"Value",color,@"Color",nil];
             [rowChartDataArray addObject:chartData];
-			[color release];
-			[value release];
         }
         [secChartDataArray addObject:rowChartDataArray];
-        [rowChartDataArray release];
     }
     NDLog(@"LineChartVCtrl : createLineChart : secChartDataArray = %@", secChartDataArray);
 	return secChartDataArray;
@@ -196,7 +190,6 @@
             [rowChartDataArray addObject:lineDic];
         }
         [_lineDicArray addObject:rowChartDataArray];
-        [rowChartDataArray release];
     }
 	[self.lineChart drawChart:_lineDicArray];
 }
@@ -241,7 +234,6 @@
             NSValue *linePointValue = [NSValue valueWithCGPoint:CGPointMake(linePointInst.x, 0)];
             [lineDic setObject:linePointValue forKey:@"LinePoint"];
             [[_lineDicArray objectAtIndex:section] replaceObjectAtIndex:index withObject:lineDic];
-            [lineDic release];
         }
     }
 	[self.lineChart reloadData];
@@ -289,7 +281,6 @@
                     NSString *monthLabel = [monthNames objectAtIndex:index % 12];
                     [barDic setObject:monthLabel forKey:@"Label"];
                     [[_lineChartDataArray objectAtIndex:section] replaceObjectAtIndex:index withObject:barDic];
-                    [barDic release];
                 }
             }
         }
@@ -399,7 +390,6 @@
             [rowChartDataArray addObject:lineDic];
         }
         [_lineDicArray addObject:rowChartDataArray];
-        [rowChartDataArray release];
     }
     NSString *linesStr = [NSString stringWithFormat:@"Line(s) = %d", [self.lineChartDataArray count]];
     NSString *segmentsStr = [NSString stringWithFormat:@"Seg(s) = %d", [[self.lineChartDataArray objectAtIndex:0] count]];
@@ -422,7 +412,6 @@
             NSValue *linePointValue = [NSValue valueWithCGPoint:CGPointMake(linePointInst.x, lineHeight)];
             [lineDic setObject:linePointValue forKey:@"LinePoint"];
             [[_lineDicArray objectAtIndex:section] replaceObjectAtIndex:index withObject:lineDic];
-            [lineDic release];
         }
     }
 	[self.lineChart reloadData];
@@ -491,19 +480,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)dealloc {
-	[_lineChart release];
-	[_selectedLineLabel release];
-	[_segmentsLabel release];
-	[_linesLabel release];
-	[_numOfLines release];
-	[_indexOfLines release];
-	[_downArrow release];
-	[_lineSegmentSwitch release];
-    [_lineDicArray release];
-	[_lineChartDataArray release];
-	[_lineChartConfigArray release];
-	[super dealloc];
-}
 
 @end

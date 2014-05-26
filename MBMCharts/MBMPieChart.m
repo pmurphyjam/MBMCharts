@@ -16,7 +16,7 @@
 @property (nonatomic, assign) double    startAngle;
 @property (nonatomic, assign) double    endAngle;
 @property (nonatomic, assign) BOOL      isSelected;
-@property (nonatomic, retain) NSString  *text;
+@property (nonatomic, strong) NSString  *text;
 - (void)createArcAnimationForKey:(NSString *)key fromValue:(NSNumber *)from toValue:(NSNumber *)to Delegate:(id)delegate;
 @end
 
@@ -65,10 +65,6 @@
     [self setValue:to forKey:key];
 }
 
-- (void)dealloc {
-	[_text release];
-	[super dealloc];
-}
 
 @end
 
@@ -316,7 +312,6 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
             
             [_pieView setUserInteractionEnabled:YES];
         }];
-        [layersToRemove release];
         BOOL isOnStart = ([slicelayers count] == 0 && sliceCount);
         NSInteger diff = sliceCount - [slicelayers count];
         layersToRemove = [NSMutableArray arrayWithArray:slicelayers];
@@ -441,7 +436,7 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
         NSNumber *presentationLayerEndAngle = [[obj presentationLayer] valueForKey:@"endAngle"];
         CGFloat interpolatedEndAngle = [presentationLayerEndAngle doubleValue];
         CGPathRef path = CGPathCreateArc(_pieCenter, _pieRadius, interpolatedStartAngle, interpolatedEndAngle);
-        [obj setPath:path];
+		[obj setPath:(__bridge NSString *)(path)];
         CFRelease(path);
         {
             CALayer *labelLayer = [[obj sublayers] objectAtIndex:0];
@@ -598,7 +593,7 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
     CATextLayer *textLayer = [CATextLayer layer];
 	[textLayer setHidden:YES];
     textLayer.contentsScale = [[UIScreen mainScreen] scale];
-    CGFontRef font = CGFontCreateWithFontName(( CFStringRef)[self.labelFont fontName]);
+    CGFontRef font = CGFontCreateWithFontName((__bridge  CFStringRef)[self.labelFont fontName]);
     [textLayer setFont:font];
     CFRelease(font);
     [textLayer setFontSize:self.labelFont.pointSize];
@@ -648,13 +643,5 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
     [CATransaction setDisableActions:NO];
 }
 
-- (void)dealloc {
-	[_labelFont release];
-	[_labelColor release];
-	[_labelShadowColor release];
-	[_pieView release];
-	[_animations release];
-	[super dealloc];
-}
 
 @end

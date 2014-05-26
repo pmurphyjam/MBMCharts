@@ -27,16 +27,16 @@
 @end
 
 @interface MBMPieChart : UIView
-@property(nonatomic, assign) id<MBMPieChartDataSource> chartDataSource;
-@property(nonatomic, assign) id<MBMPieChartDelegate> chartDelegate;
+@property(nonatomic, weak) id<MBMPieChartDataSource> chartDataSource;
+@property(nonatomic, weak) id<MBMPieChartDelegate> chartDelegate;
 @property(nonatomic, assign) CGFloat startPieAngle;
 @property(nonatomic, assign) CGFloat animationSpeed;
 @property(nonatomic, assign) CGPoint pieCenter;
 @property(nonatomic, assign) CGFloat pieRadius;
 @property(nonatomic, assign) BOOL    showLabel;
-@property(nonatomic, retain) UIFont  *labelFont;
-@property(nonatomic, retain) UIColor *labelColor;
-@property(nonatomic, retain) UIColor *labelShadowColor;
+@property(nonatomic, strong) UIFont  *labelFont;
+@property(nonatomic, strong) UIColor *labelColor;
+@property(nonatomic, strong) UIColor *labelShadowColor;
 @property(nonatomic, assign) CGFloat labelRadius;
 @property(nonatomic, assign) CGFloat selectedSliceStroke;
 @property(nonatomic, assign) CGFloat selectedSliceOffsetRadius;

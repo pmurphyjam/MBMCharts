@@ -20,7 +20,7 @@
 @property (nonatomic, assign) BOOL touched;
 @property (nonatomic, assign) NSUInteger section;
 @property (nonatomic, assign) NSUInteger index;
-@property (nonatomic, retain) NSString *text;
+@property (nonatomic, strong) NSString *text;
 - (void)createLineAnimationForKey:(NSString *)key fromValue:(NSValue *)from toValue:(NSValue *)to Delegate:(id)delegate;
 - (void)createPathAnimationForKey:(NSString *)key fromValue:(CGPathRef)from toValue:(CGPathRef)to Delegate:(id)delegate;
 @end
@@ -78,18 +78,14 @@
 {
     CABasicAnimation *linesAnimation = [CABasicAnimation animationWithKeyPath:key];
     NDLog(@"MBMLineChart : createPathAnimationForKey : key = %@ : fromPath = %@ : toPath = %@ ",key,CGPathIsEmpty(from)?@"Bad":@"Good",CGPathIsEmpty(from)?@"Bad":@"Good");
-    [linesAnimation setFromValue:(id)from];
-    [linesAnimation setToValue:(id)to];
+    [linesAnimation setFromValue:(__bridge id)from];
+    [linesAnimation setToValue:(__bridge id)to];
     [linesAnimation setDelegate:delegate];
     [linesAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
     [self addAnimation:linesAnimation forKey:key];
-    [self setValue:(id)to forKey:key];
+    [self setValue:(__bridge id)to forKey:key];
 }
 
-- (void)dealloc {
-	[_text release];
-	[super dealloc];
-}
 
 @end
 
@@ -576,10 +572,10 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
     NSArray *lineLayers = [parentLayer sublayers];
     [lineLayers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         CGPoint presentationLayerPoint = [[[obj presentationLayer] valueForKey:@"point"] CGPointValue];
-		CGPathRef presentationLayerPath = (CGPathRef)[[obj presentationLayer] valueForKey:@"path"];
+		CGPathRef presentationLayerPath = (__bridge CGPathRef)[[obj presentationLayer] valueForKey:@"path"];
 		//NDLog(@"MBMLineChart : updateTimerFired : path = %@",CGPathIsEmpty(presentationLayerPath)?@"Bad":@"Good");
 		//NDLog(@"MBMLineChart : updateTimerFired :  presentationLayerFromPoint : x = %f : y = %f",presentationLayerPoint.x,presentationLayerPoint.y);
-		[obj setPath:presentationLayerPath];
+		[obj setPath:(__bridge NSString *)(presentationLayerPath)];
         {
             CALayer *labelLayer = [[obj sublayers] objectAtIndex:0];
             //Hide the labelLayer so when the user clicks on it, it becomes visible
@@ -746,7 +742,7 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
     CATextLayer *textLayer = [CATextLayer layer];
 	[textLayer setHidden:YES];
     textLayer.contentsScale = [[UIScreen mainScreen] scale];
-    CGFontRef font = CGFontCreateWithFontName((CFStringRef)[self.labelFont fontName]);
+    CGFontRef font = CGFontCreateWithFontName((__bridge CFStringRef)[self.labelFont fontName]);
     [textLayer setFont:font];
     CFRelease(font);
     [textLayer setFontSize:self.labelFont.pointSize];
@@ -912,16 +908,5 @@ static CGPathRef CGPathCreatePathFromPoint(CGPoint fromPoint, CGPoint toPoint, C
 	CGContextStrokeRect(context, CGRectMake(CGRectGetMinX(rect) + leftPaddingAxisY,  CGRectGetMinY(rect), CGRectGetMaxX(rect) - leftPaddingAxisY - 1.0f, rect.size.height));
 }
 
-- (void)dealloc {
-    [_labelFont release];
-	[_labelColor release];
-	[_labelShadowColor release];
-    [_lineDicArray release];
-	[_lineView release];
-	[_animations release];
-	[colorAxisY release];
-	[colorAxis release];
-	[super dealloc];
-}
 
 @end

@@ -78,15 +78,13 @@
     int slices = [[dataDic objectForKey:@"SLICES"] intValue];
     NDLog(@"PieChartVCtrl : createPieChart : dataDic = %@", dataDic);
     
-    NSMutableArray *sliceChartDataArray = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *sliceChartDataArray = [[NSMutableArray alloc] init];
     for (int row = 0; row < slices; row++)
     {
-        NSString *color = [[self getRandomColor] retain];
-        NSNumber *value = [[self getRandomNum:NO seed:seedInt] retain];
+        NSString *color = [self getRandomColor];
+        NSNumber *value = [self getRandomNum:NO seed:seedInt];
         NSDictionary *chartData = [NSDictionary dictionaryWithObjectsAndKeys:value,@"Value",color,@"Color",nil];
 		[sliceChartDataArray addObject:chartData];
-		[color release];
-		[value release];
     }
     
     NDLog(@"PieChartVCtrl : createPieChart : sliceChartDataArray = %@", sliceChartDataArray);
@@ -316,18 +314,5 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-- (void)dealloc {
-	[_pieChartRight release];
-	[_pieChartLeft release];
-	[_pieDicArray release];
-	[_pieChartDataArray release];
-	[_pieChartConfigArray release];
-	[_percentageLabel release];
-	[_selectedSliceLabel release];
-	[_numOfSlices release];
-	[_indexOfSlices release];
-	[_downArrow release];
-	[super dealloc];
-}
 
 @end

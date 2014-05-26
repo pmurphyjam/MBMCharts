@@ -1,8 +1,9 @@
 //
 //  UIImageCategory.m
-//  
-//  Created by Pat Murphy on 12/13/12.
-//  Copyright (c) 2012 Pat Murphy. All rights reserved.
+//  MBMClient
+//
+//  Created by Anantha Srinivas Malyala on 12/21/11.
+//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
 #import "UIImageCategory.h"
@@ -144,7 +145,8 @@ CGImageRef grayscaleCGImageFromCGImage(CGImageRef inputImage) {
     // Cleanup
     CGContextRelease(context);
     CGColorSpaceRelease(colorspace);
-    return (CGImageRef)[(id)outputImage autorelease];
+	return (__bridge CGImageRef)(__bridge  id)outputImage;
+
 }
 
 

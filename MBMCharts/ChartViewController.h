@@ -15,7 +15,7 @@
     NSArray *featureListCellArray;
 }
 
-@property(nonatomic, retain) NSArray  *chartTypeSectionArray;
-@property(nonatomic, retain) NSArray  *featureListCellArray;
+@property(nonatomic, strong) NSArray  *chartTypeSectionArray;
+@property(nonatomic, strong) NSArray  *featureListCellArray;
 
 @end

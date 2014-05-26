@@ -30,8 +30,8 @@
 @end
 
 @interface MBMLineChart : UIScrollView <UIScrollViewDelegate>
-@property (nonatomic, assign) id<MBMLineChartDataSource> chartDataSource;
-@property (nonatomic, assign) id<MBMLineChartDelegate> chartDelegate;
+@property (nonatomic, weak) id<MBMLineChartDataSource> chartDataSource;
+@property (nonatomic, weak) id<MBMLineChartDelegate> chartDelegate;
 @property (nonatomic, assign) CGPoint linePoint;
 @property (nonatomic, assign) CGFloat animationSpeed;
 @property (nonatomic, assign) CGFloat lineHeight;
@@ -39,11 +39,11 @@
 @property (nonatomic, assign) CGFloat numberOfLines;
 @property (nonatomic, assign) NSUInteger numberOfElements;
 @property (nonatomic, assign) BOOL    showLabel;
-@property (nonatomic, retain) UIFont  *labelFont;
-@property (nonatomic, retain) UIColor *labelColor;
-@property (nonatomic, retain) UIColor *labelShadowColor;
+@property (nonatomic, strong) UIFont  *labelFont;
+@property (nonatomic, strong) UIColor *labelColor;
+@property (nonatomic, strong) UIColor *labelShadowColor;
 @property (nonatomic, assign) CGFloat selectedLineStroke;
-@property (nonatomic, retain) NSMutableArray *lineDicArray;
+@property (nonatomic, strong) NSMutableArray *lineDicArray;
 @property (nonatomic, assign) CGRect chartRect;
 @property (nonatomic, assign) CGFloat paddingTop;
 @property (nonatomic, assign) CGFloat paddingBotom;
@@ -60,8 +60,8 @@
 @property (nonatomic, assign) CGFloat barInterval;
 @property (nonatomic, assign) CGFloat maxValue;
 @property (nonatomic, assign) CGFloat scaleAxisY;
-@property (nonatomic, retain) UIColor *colorAxisY;
-@property (nonatomic, retain) UIColor *colorAxis;
+@property (nonatomic, strong) UIColor *colorAxisY;
+@property (nonatomic, strong) UIColor *colorAxis;
 @property (nonatomic, assign) BOOL showAxisY;
 @property (nonatomic, assign) BOOL showAxisX;
 @property (nonatomic, assign) BOOL plotVerticalLines;

@@ -10,18 +10,18 @@
 #import "MBMLineChart.h"
 
 @interface LineChartViewController : UIViewController <MBMLineChartDelegate, MBMLineChartDataSource>
-@property (retain, nonatomic) IBOutlet MBMLineChart *lineChart;
-@property (retain, nonatomic) IBOutlet UILabel *selectedLineLabel;
-@property (retain, nonatomic) IBOutlet UILabel *lineStatusLabel;
-@property (retain, nonatomic) IBOutlet UILabel *segmentsLabel;
-@property (retain, nonatomic) IBOutlet UILabel *linesLabel;
-@property (retain, nonatomic) IBOutlet UITextField *numOfLines;
-@property (retain, nonatomic) IBOutlet UISegmentedControl *indexOfLines;
-@property (retain, nonatomic) IBOutlet UIButton *downArrow;
-@property (retain, nonatomic) IBOutlet UISwitch *lineSegmentSwitch;
-@property(nonatomic, retain) NSMutableArray *lineDicArray;
-@property(nonatomic, retain) NSMutableArray *lineChartDataArray;
-@property(nonatomic, retain) NSMutableArray *lineChartConfigArray;
+@property (strong, nonatomic) IBOutlet MBMLineChart *lineChart;
+@property (strong, nonatomic) IBOutlet UILabel *selectedLineLabel;
+@property (strong, nonatomic) IBOutlet UILabel *lineStatusLabel;
+@property (strong, nonatomic) IBOutlet UILabel *segmentsLabel;
+@property (strong, nonatomic) IBOutlet UILabel *linesLabel;
+@property (strong, nonatomic) IBOutlet UITextField *numOfLines;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *indexOfLines;
+@property (strong, nonatomic) IBOutlet UIButton *downArrow;
+@property (strong, nonatomic) IBOutlet UISwitch *lineSegmentSwitch;
+@property(nonatomic, strong) NSMutableArray *lineDicArray;
+@property(nonatomic, strong) NSMutableArray *lineChartDataArray;
+@property(nonatomic, strong) NSMutableArray *lineChartConfigArray;
 @property(nonatomic, assign) NSUInteger numberOfSections;
 
 - (void) setUpChart;

@@ -25,7 +25,6 @@
         _chartTypeSectionArray = [[NSArray alloc]initWithObjects:@"Chart Types",nil];
 		NSArray *chartTypes = [[NSArray alloc]initWithObjects:@"Pie Charts",@"Bar Charts",@"Line Charts",nil];
         _featureListCellArray = [[NSArray alloc]initWithObjects:chartTypes,nil];
-		[chartTypes release];
 
     }
     return self;
@@ -57,7 +56,6 @@
             chartViewController = [[LineChartViewController alloc] initWithNibName:@"LineChartViewController" bundle:nil];
         }
         [self.navigationController pushViewController:chartViewController animated:YES];
-        [chartViewController release];
     }
 }
 
@@ -79,7 +77,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 300, 44)];
     [title setBackgroundColor:[UIColor clearColor]];
     [title setFont:[UIFont fontWithName:@"Helvetica" size:16]];
@@ -87,7 +85,6 @@
     [title setText:[[_featureListCellArray objectAtIndex:[indexPath section]]objectAtIndex:indexPath.row]];
     [title setTextColor:[UIColor blackColor]];
     [cell.contentView addSubview:title];
-	[title release];
     cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
@@ -109,9 +106,4 @@
     return UIInterfaceOrientationMaskLandscape;
 }
 
-- (void)dealloc {
-	[_chartTypeSectionArray release];
-	[_featureListCellArray release];
-	[super dealloc];
-}
 @end

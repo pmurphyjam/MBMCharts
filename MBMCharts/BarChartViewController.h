@@ -11,14 +11,14 @@
 
 @interface BarChartViewController : UIViewController <MBMBarChartDelegate, MBMBarChartDataSource>
 
-@property(nonatomic, retain) IBOutlet MBMBarChart *barChart;
-@property(nonatomic, retain) IBOutlet UILabel *selectedBarLabel;
-@property(nonatomic, retain) IBOutlet UITextField *numOfBars;
-@property(nonatomic, retain) IBOutlet UISegmentedControl *indexOfBars;
-@property(nonatomic, retain) IBOutlet UIButton *downArrow;
-@property(nonatomic, retain) NSMutableArray *barDicArray;
-@property(nonatomic, retain) NSMutableArray *barChartDataArray;
-@property(nonatomic, retain) NSMutableArray *barChartConfigArray;
+@property(nonatomic, strong) IBOutlet MBMBarChart *barChart;
+@property(nonatomic, strong) IBOutlet UILabel *selectedBarLabel;
+@property(nonatomic, strong) IBOutlet UITextField *numOfBars;
+@property(nonatomic, strong) IBOutlet UISegmentedControl *indexOfBars;
+@property(nonatomic, strong) IBOutlet UIButton *downArrow;
+@property(nonatomic, strong) NSMutableArray *barDicArray;
+@property(nonatomic, strong) NSMutableArray *barChartDataArray;
+@property(nonatomic, strong) NSMutableArray *barChartConfigArray;
 
 - (void) setUpChart;
 

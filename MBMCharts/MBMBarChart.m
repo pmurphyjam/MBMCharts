@@ -17,7 +17,7 @@
 @property (nonatomic, assign) CGRect    barRect;
 @property (nonatomic, assign) CGPoint   point;
 @property (nonatomic, assign) BOOL      isSelected;
-@property (nonatomic, retain) NSString  *text;
+@property (nonatomic, strong) NSString  *text;
 
 - (void)createBarAnimationForKey:(NSString *)key fromValue:(NSValue*)fromRectValue toValue:(NSValue*)toRectValue Delegate:(id)delegate;
 @end
@@ -69,10 +69,6 @@
     [self setValue:toRectValue forKey:key];
 }
 
-- (void)dealloc {
-	[_text release];
-	[super dealloc];
-}
 
 @end
 
@@ -393,7 +389,6 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
             
             [_barView setUserInteractionEnabled:YES];
         }];
-        [layersToRemove release];
         layersToRemove = [NSMutableArray arrayWithArray:barLayers];
 
         NSInteger diff = barCount - [barLayers count];
@@ -511,7 +506,7 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
     [barLayers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		CGRect presentationLayerRect = [[[obj presentationLayer] valueForKey:@"barRect"] CGRectValue];
         CGPathRef path = CGPathCreateBar(presentationLayerRect);
-        [obj setPath:path];
+        [obj setPath:(__bridge NSString *)(path)];
         {
 			[CATransaction setDisableActions:YES];
 			CAGradientLayer *gradient = [[obj sublayers] objectAtIndex:1];
@@ -685,7 +680,7 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
     CATextLayer *textLayer = [CATextLayer layer];
 	[textLayer setHidden:YES];
     textLayer.contentsScale = [[UIScreen mainScreen] scale];
-    CGFontRef font = CGFontCreateWithFontName((CFStringRef)[self.labelFont fontName]);
+    CGFontRef font = CGFontCreateWithFontName((__bridge CFStringRef)[self.labelFont fontName]);
     [textLayer setFont:font];
     CFRelease(font);
     [textLayer setFontSize:self.labelFont.pointSize];
@@ -865,17 +860,6 @@ static CGPathRef CGPathCreateBar(CGRect barRect)
 }
 
 
-- (void)dealloc {
-    [_labelFont release];
-	[_valueColor release];
-	[_valueShadowColor release];
-    [_barDicArray release];
-	[_barView release];
-	[_animations release];
-	[colorAxisY release];
-	[colorAxis release];
-	[super dealloc];
-}
 
 
 @end

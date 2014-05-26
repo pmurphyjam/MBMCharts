@@ -103,15 +103,13 @@
     NDLog(@"BarChartVCtrl : createBarChart : dataDic = %@", dataDic);
     NSArray *monthNames = [NSArray arrayWithObjects:@"Jan",@"Feb",@"Mar",@"Apr",@"May",@"Jun",@"Jul",@"Aug",@"Sep",@"Oct",@"Nov",@"Dec",nil];
     
-    NSMutableArray *rowChartDataArray = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *rowChartDataArray = [[NSMutableArray alloc] init];
     for (int row = 0; row < rows; row++)
     {
-        NSString *color = [[self getRandomColor] retain];
-        NSNumber *value = [[self getRandomNum:NO seed:seedInt] retain];
+        NSString *color = [self getRandomColor];
+        NSNumber *value = [self getRandomNum:NO seed:seedInt];
         NSDictionary *chartData = [NSDictionary dictionaryWithObjectsAndKeys:[monthNames objectAtIndex:row % 12],@"Label",color,@"LabelColor",value,@"Value",color,@"Color",nil];
         [rowChartDataArray addObject:chartData];
-		[color release];
-		[value release];
     }
     
     NDLog(@"BarChartVCtrl : createBarChart : rowChartDataArray = %@", rowChartDataArray);
@@ -184,7 +182,6 @@
 		NSValue *barRectValue = [NSValue valueWithCGRect:CGRectMake(barRectInst.origin.x, barRectInst.origin.y, barRectInst.size.width, -10)];
 		[barDic setObject:barRectValue forKey:@"BarRect"];
 		[_barDicArray replaceObjectAtIndex:index withObject:barDic];
-		[barDic release];
 	}
 	[self.barChart reloadData];
 }
@@ -222,7 +219,6 @@
 			NSString *monthLabel = [monthNames objectAtIndex:index % 12];
 			[barDic setObject:monthLabel forKey:@"Label"];
 			[_barChartDataArray replaceObjectAtIndex:index withObject:barDic];
-			[barDic release];
 		}
 	}
 	else if (num < 0)
@@ -287,7 +283,6 @@
 		NSValue *barRectValue = [NSValue valueWithCGRect:CGRectMake(barRectInst.origin.x, barRectInst.origin.y, barRectInst.size.width, barHeight)];
 		[barDic setObject:barRectValue forKey:@"BarRect"];
 		[_barDicArray replaceObjectAtIndex:index withObject:barDic];
-		[barDic release];
 	}
 	[self.barChart reloadData];
 }
@@ -332,16 +327,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)dealloc {
-	[_barChart release];
-	[_selectedBarLabel release];
-	[_numOfBars release];
-	[_indexOfBars release];
-	[_downArrow release];
-    [_barDicArray release];
-	[_barChartDataArray release];
-    [_barChartConfigArray release];
-	[super dealloc];
-}
 
 @end
